@@ -22,7 +22,6 @@ export const parseJson = async <T>(res: ResponsePromise) => {
     throw e;
   }
 };
-
 export const fetcher = {
   get: <T>(pathname: string, options?: Options) => parseJson<T>(ky.get(pathname, options)),
   post: <T>(pathname: string, options?: Options) => parseJson<T>(ky.post(pathname, options)),
