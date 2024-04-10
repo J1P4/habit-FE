@@ -1,7 +1,8 @@
-import type { Metadata } from 'next';
 import './globals.css';
+import type { Metadata } from 'next';
 import { HabitFont } from '@/app/fonts';
 import { QueryClientProvider } from '@/commons/apis/queryClientProvider';
+import MobileViewLayout from '@/commons/layouts/MobileViewLayout';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -14,10 +15,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <QueryClientProvider>
-      <html lang="en">
-        <body className={HabitFont.className}>{children}</body>
-      </html>
-    </QueryClientProvider>
+    <html lang="en">
+      <body className={HabitFont.className}>
+        <QueryClientProvider>{children}</QueryClientProvider>
+      </body>
+    </html>
   );
 }
