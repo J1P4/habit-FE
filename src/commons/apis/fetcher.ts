@@ -1,6 +1,6 @@
 import ky, { Options, ResponsePromise } from 'ky';
 
-const BASE_API_URL = '';
+const BASE_API_URL = `${process.env.SERVER_URL}`;
 
 export const instance = ky.create({
   prefixUrl: BASE_API_URL,
@@ -9,7 +9,24 @@ export const instance = ky.create({
   },
   hooks: {
     // TODO 인증 전 헤더 처리 로직 추가
-    beforeRequest: [],
+    beforeRequest: [
+      (request) => {
+        const accessToken = localStorage.getItem('accessToken');
+        if (accessToken) {
+          request.headers.set('Authorization', `Bearer ${accessToken}`);
+        }
+      },
+    ],
+    afterResponse: [
+      async (request, options, response) => {
+        if (!response.ok) {
+          const body = await response.json();
+          if (body) {
+            throw new Error(body.message);
+          }
+        }
+      },
+    ],
   },
 });
 
@@ -23,9 +40,11 @@ export const parseJson = async <T>(res: ResponsePromise) => {
   }
 };
 export const fetcher = {
-  get: <T>(pathname: string, options?: Options) => parseJson<T>(ky.get(pathname, options)),
-  post: <T>(pathname: string, options?: Options) => parseJson<T>(ky.post(pathname, options)),
-  put: <T>(pathname: string, options?: Options) => parseJson<T>(ky.put(pathname, options)),
-  patch: <T>(pathname: string, options?: Options) => parseJson<T>(ky.patch(pathname, options)),
-  delete: <T>(pathname: string, options?: Options) => parseJson<T>(ky.delete(pathname, options)),
+  get: <T>(pathname: string, options?: Options) => parseJson<T>(instance.get(pathname, options)),
+  post: <T>(pathname: string, options?: Options) => parseJson<T>(instance.post(pathname, options)),
+  put: <T>(pathname: string, options?: Options) => parseJson<T>(instance.put(pathname, options)),
+  patch: <T>(pathname: string, options?: Options) =>
+    parseJson<T>(instance.patch(pathname, options)),
+  delete: <T>(pathname: string, options?: Options) =>
+    parseJson<T>(instance.delete(pathname, options)),
 };
