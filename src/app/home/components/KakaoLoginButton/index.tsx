@@ -11,3 +11,4 @@ const KakaoLoginButton = ({ onClick }: { onClick?: () => void }) => {
 };
 
 export default KakaoLoginButton;
+

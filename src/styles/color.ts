@@ -11,6 +11,7 @@ const GRAY = {
     900:'#202226',
 }
 
+
 const COMMON = {
     white: '#FFFFFF',
     black: '#000000'
