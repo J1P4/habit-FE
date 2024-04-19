@@ -9,6 +9,15 @@ const nextConfig = {
                 permanent: true
             }
         ];
+    },
+
+    async rewrites() {
+        return [
+          {
+            source: "/:path*",
+            destination: "https://openapi.naver.com/:path*",
+          },
+        ];
     }
 };
 
