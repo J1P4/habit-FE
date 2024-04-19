@@ -1,13 +1,13 @@
-import { createContext, useCallback, useMemo, useRef } from 'react';
+import { createContext, useCallback, useContext, useMemo, useRef } from 'react';
 
 type AgeGroup = 'Under 19' | '20-24' | '25-29' | '30-34' | '35-39' | '40 and above';
 
 export interface CreateUserInfoValues {
-  nickname: string;
-  height: number;
-  weight: number;
-  gender: string;
-  ageRange: AgeGroup;
+  nickname?: string;
+  height?: number;
+  weight?: number;
+  gender?: string;
+  ageRange?: string;
 }
 
 interface UserInfoContext {
@@ -23,7 +23,8 @@ export default function CreateUserInfoContextProvider({ children }: { children: 
 
   const setValue = useCallback(
     <T extends keyof CreateUserInfoValues>(target: T, value: CreateUserInfoValues[T]) => {
-      createUserInfoValues.current[target] = value;
+      const prevValues = createUserInfoValues.current;
+      createUserInfoValues.current = { ...prevValues, [target]: value };
     },
     [],
   );
@@ -48,7 +49,7 @@ export default function CreateUserInfoContextProvider({ children }: { children: 
 }
 
 export function useCreateUserInfoContext() {
-  const context = CreateUserInfoContext;
+  const context = useContext(CreateUserInfoContext);
   if (!context) {
     throw new Error('[CreateUserInfoContextProvider] 를 감싸서 사용하세요.');
   }
