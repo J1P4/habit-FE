@@ -13,10 +13,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/commons/components/ui/select';
+import useRegisterUser from '@/app/create-user-info/api/mutations/useRegisterUser';
+import { useRouter } from 'next/navigation';
 
 const SelectUserGenderAgeRange = () => {
-  const { setCarouselIndexNext } = useCarousel();
   const { setValue, getValues } = useCreateUserInfoContext();
+  const { push } = useRouter();
+  const { mutate } = useRegisterUser();
 
   const onSelectGender = (value: string) => {
     setValue('gender', value);
@@ -28,6 +31,9 @@ const SelectUserGenderAgeRange = () => {
 
   const onSubmit = () => {
     const values = getValues();
+    mutate(values);
+    // TODO PATH 정의 필요, 현재는 임시로 main으로 이동
+    // push('/main')
     console.log(values);
   };
   return (

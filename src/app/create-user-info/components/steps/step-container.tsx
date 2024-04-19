@@ -18,7 +18,7 @@ export const CarouselDispatchContext = createContext<CarouselDispatch | undefine
 const STEPS = [
   <CreateUserNickname key={Steps.CREATE_USER_NICKNAME} />,
   <SetWeightHeight key={Steps.SET_WEIGHT_HEIGHT} />,
-  <SelectUserGenderAgeRange key={Steps.SELECT_USER_GENDER} />,
+  <SelectUserGenderAgeRange key={Steps.SELECT_USER_GENDER_AGE_RANGE} />,
 ] as const;
 
 export default function StepContainer() {
