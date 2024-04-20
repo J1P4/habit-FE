@@ -1,6 +1,7 @@
 import useSearchFoodList from '@/app/food-entry/api/queries/useSearchFoodList';
 import { useIntersectionObserver } from '@/app/food-entry/hooks/useIntersectionObserver';
 import { useSearchFoodListContext } from '@/app/food-entry/context/search-food-list-context';
+import FoodItem from '@/app/food-entry/components/food-item';
 
 const FoodList = () => {
   const { getValue } = useSearchFoodListContext();
@@ -16,13 +17,15 @@ const FoodList = () => {
       <div className="flex flex-col gap-4">
         {foodListData?.map((food) => {
           return (
-            <div key={food.id} className="flex items-center gap-4">
-              <div className="flex flex-col">
-                {/*ResponseFoodListData Type 참조하여 FoodItem Component를 만들어 UI 수정*/}
-                <h3 className="text-[16px] font-bold">{food.name}</h3>
-                <p className="text-[12px] text-gray-400">{food.energy}</p>
-              </div>
-            </div>
+            <FoodItem
+              key={food.id}
+              id={food.id}
+              name={food.name}
+              energy={food.energy}
+              fat={food.fat}
+              moisture={food.moisture}
+              protein={food.protein}
+            />
           );
         })}
       </div>
