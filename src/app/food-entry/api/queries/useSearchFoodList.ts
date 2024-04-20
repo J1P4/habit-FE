@@ -7,16 +7,17 @@ interface SearchParams {
   pageSize: number;
 }
 
-// TODO API Response Type 정의
+// TODO Type 밖으로 꺼내기
+export interface FoodItemData {
+  id: number;
+  name: string;
+  energy: number;
+  fat: number;
+  moisture: number;
+  protein: number;
+}
 interface ResponseFoodListData {
-  data: {
-    id: number;
-    name: string;
-    energy: number;
-    fat: number;
-    moisture: number;
-    protein: number;
-  }[];
+  data: FoodItemData[];
   error: any;
 }
 const searchFoodList = (params: SearchParams) => {
