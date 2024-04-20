@@ -1,6 +1,6 @@
+import Link from 'next/link';
 
-
-const FoodComponent = () => {
+const FoodComponent = ({ food }) => {
   return (
     <div className="flex items-center bg-gray-100 mx-10 my-3 p-5 rounded-lg">
       <div className="flex-shrink-0 mr-4">
@@ -12,13 +12,14 @@ const FoodComponent = () => {
       </div>
       <div className="flex flex-col flex-grow">
         <p className="text-sm text-[#6CB663]">350kcal</p>
-        <h4 className="text-lg font-semibold">음식명</h4>
+        <h4 className="text-lg font-semibold">{food}</h4>
         <p className="text-sm text-gray-600">음식 주요 성분</p>
+        <Link href="/restaurant-info">
+          <button>추천 식당 보기</button>
+        </Link>
       </div>
     </div>
   );
 };
 
 export default FoodComponent;
-
-

@@ -1,18 +1,17 @@
-'use client';
-import React, { useState, useEffect } from 'react';
+'use client'
+import React, { useState } from 'react';
 import HomeLayout from './layout';
 import Ment from './components/Ment';
 import FoodComponent from './components/Food';
 
 const HomePage = () => {
-
+  const [food, setFood] = useState('김밥');
 
   return (
     <>
       <HomeLayout>
         <Ment/>
-        <FoodComponent/>
-        <FoodComponent/>
+        <FoodComponent food={food}/>
       </HomeLayout> 
     </>
   );
