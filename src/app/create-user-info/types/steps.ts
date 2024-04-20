@@ -1,4 +1,5 @@
 export const Steps = {
   CREATE_USER_NICKNAME: 0,
-  SELECT_USER_GENDER: 1,
+  SET_WEIGHT_HEIGHT: 1,
+  SELECT_USER_GENDER_AGE_RANGE: 2,
 } as const;

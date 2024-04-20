@@ -1,6 +1,6 @@
 import ky, { Options, ResponsePromise } from 'ky';
 
-const BASE_API_URL = `${process.env.SERVER_URL}`;
+const BASE_API_URL = process.env.NEXT_PUBLIC_SERVER_BASE_URL;
 
 export const instance = ky.create({
   prefixUrl: BASE_API_URL,
@@ -8,7 +8,6 @@ export const instance = ky.create({
     'content-type': 'application/json',
   },
   hooks: {
-    // TODO 인증 전 헤더 처리 로직 추가
     beforeRequest: [
       (request) => {
         const accessToken = localStorage.getItem('accessToken');

@@ -4,8 +4,9 @@ import { Carousel, CarouselApi, CarouselContent } from '@/commons/components/ui/
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import CreateUserNickname from '@/app/create-user-info/components/steps/create-user-nickname';
 import { Steps } from '@/app/create-user-info/types/steps';
-import SelectUserGender from '@/app/create-user-info/components/steps/select-user-gender';
+import SelectUserGenderAgeRange from '@/app/create-user-info/components/steps/select-user-gender-age-range';
 import CarouselContainer from '@/app/create-user-info/components/CarouselContainer';
+import SetWeightHeight from '@/app/create-user-info/components/steps/set-weight-height';
 
 interface CarouselDispatch {
   setCarouselIndexPrev: () => void;
@@ -16,7 +17,8 @@ export const CarouselDispatchContext = createContext<CarouselDispatch | undefine
 
 const STEPS = [
   <CreateUserNickname key={Steps.CREATE_USER_NICKNAME} />,
-  <SelectUserGender key={Steps.SELECT_USER_GENDER} />,
+  <SetWeightHeight key={Steps.SET_WEIGHT_HEIGHT} />,
+  <SelectUserGenderAgeRange key={Steps.SELECT_USER_GENDER_AGE_RANGE} />,
 ] as const;
 
 export default function StepContainer() {
