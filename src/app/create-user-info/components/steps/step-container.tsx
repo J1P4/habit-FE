@@ -29,10 +29,11 @@ export default function StepContainer() {
 
   const setCarouselIndexPrev = useCallback(() => {
     if (api?.selectedScrollSnap() === 1) {
+      push('/');
       return;
     }
     api?.scrollPrev();
-  }, [api]);
+  }, [push, api]);
 
   const setCarouselIndexNext = useCallback(() => {
     api?.scrollNext();
