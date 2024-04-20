@@ -11,8 +11,10 @@ export default function Page() {
   useEffect(() => {
     const accessToken = searchParams.get('accessToken');
     const role = searchParams.get('role');
+    console.log('role', role);
 
     if (!accessToken) return;
+    window.localStorage.setItem('accessToken', accessToken);
     role === 'GUEST' ? push('/create-user-info') : push('/');
   }, [searchParams]);
 
