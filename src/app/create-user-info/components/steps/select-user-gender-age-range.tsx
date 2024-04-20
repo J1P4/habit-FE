@@ -15,6 +15,7 @@ import {
 } from '@/commons/components/ui/select';
 import useRegisterUser from '@/app/create-user-info/api/mutations/useRegisterUser';
 import { useRouter } from 'next/navigation';
+import { PATHS } from '@/commons/constants/paths';
 
 const SelectUserGenderAgeRange = () => {
   const { setValue, getValues } = useCreateUserInfoContext();
@@ -38,8 +39,7 @@ const SelectUserGenderAgeRange = () => {
     // TODO accessToken 저장 방식 변경 필요 혹은 token 관련 localStorage 로직 추상화
     localStorage.setItem('accessToken', data.accessToken);
     console.log('data', data.accessToken);
-    // TODO PATH 정의 필요, 현재는 임시로 main으로 이동
-    // push('/main')
+    push(PATHS.메인);
   };
   return (
     <div className="w-full">
