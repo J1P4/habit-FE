@@ -7,6 +7,7 @@ import { Steps } from '@/app/create-user-info/types/steps';
 import SelectUserGenderAgeRange from '@/app/create-user-info/components/steps/select-user-gender-age-range';
 import CarouselContainer from '@/app/create-user-info/components/CarouselContainer';
 import SetWeightHeight from '@/app/create-user-info/components/steps/set-weight-height';
+import StepHeader from '@/app/create-user-info/components/step-header';
 
 interface CarouselDispatch {
   setCarouselIndexPrev: () => void;
@@ -28,15 +29,15 @@ export default function StepContainer() {
   const searchParams = useSearchParams();
 
   const setCarouselIndexPrev = useCallback(() => {
-    if (api?.selectedScrollSnap() === 1) {
+    if (api?.selectedScrollSnap() === 0) {
+      push('/');
       return;
     }
     api?.scrollPrev();
-  }, [api]);
+  }, [push, api]);
 
   const setCarouselIndexNext = useCallback(() => {
     api?.scrollNext();
-    console.log(api?.scrollSnapList());
   }, [api]);
 
   const memoizedCarouselDispatch = useMemo(
@@ -57,16 +58,22 @@ export default function StepContainer() {
     const step = searchParams.get('step') ? Number(searchParams.get('step')) : 0;
 
     if (step > api.selectedScrollSnap()) {
-      if (step === 1) {
-        api.scrollTo(1, true);
+      // 앞선 과정을 뛰어넘는 것을 방지(ex. 새로고침)
+      if (step === 0) {
+        api.scrollTo(0, true);
         return;
       }
       push(pathname + `?step=${api.selectedScrollSnap()}`);
+    }
+    // 브라우저 뒤로가기 처리
+    if (step < api.selectedScrollSnap()) {
+      api.scrollTo(step, true);
     }
   }, [api?.selectedScrollSnap, push, pathname, searchParams, api]);
 
   return (
     <CarouselDispatchContext.Provider value={memoizedCarouselDispatch}>
+      <StepHeader />
       <Carousel
         setApi={setApi}
         opts={{
@@ -80,8 +87,6 @@ export default function StepContainer() {
             <CarouselContainer key={idx}>{step}</CarouselContainer>
           ))}
         </CarouselContent>
-        {/*<CarouselPrevious />*/}
-        {/*<CarouselNext />*/}
       </Carousel>
     </CarouselDispatchContext.Provider>
   );
