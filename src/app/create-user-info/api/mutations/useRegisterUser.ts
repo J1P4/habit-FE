@@ -3,16 +3,22 @@ import { CreateUserInfoValues } from '@/app/create-user-info/context/create-user
 import { useMutation } from '@tanstack/react-query';
 
 // Type CreateUserInfoValues 위로 빼내기
+interface registerUserResponse {
+  data: {
+    accessToken: string;
+  };
+  error: any;
+}
 const registerUser = (body: CreateUserInfoValues) => {
-  return fetcher.post<CreateUserInfoValues>(`/v1/auth/register`, {
+  console.log('aa', fetcher.post);
+  return fetcher.post<registerUserResponse>(`api/v1/auth/register`, {
     json: body,
   });
 };
 
-const useRegisterUser = () => {
-  return useMutation({
+const useRegisterUser = () =>
+  useMutation({
     mutationFn: (body: CreateUserInfoValues) => registerUser(body),
   });
-};
 
 export default useRegisterUser;

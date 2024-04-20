@@ -7,7 +7,7 @@ export interface CreateUserInfoValues {
   height?: number;
   weight?: number;
   gender?: string;
-  ageRange?: string;
+  age?: number;
 }
 
 interface UserInfoContext {

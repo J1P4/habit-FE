@@ -19,22 +19,27 @@ import { useRouter } from 'next/navigation';
 const SelectUserGenderAgeRange = () => {
   const { setValue, getValues } = useCreateUserInfoContext();
   const { push } = useRouter();
-  const { mutate } = useRegisterUser();
+  const { mutateAsync } = useRegisterUser();
 
   const onSelectGender = (value: string) => {
     setValue('gender', value);
   };
 
   const onSelectAge = (value: string) => {
-    setValue('ageRange', value);
+    setValue('age', Number(value));
   };
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     const values = getValues();
-    mutate(values);
+    const { data } = await mutateAsync({
+      ...values,
+      age: Number(values.age),
+    });
+    // TODO accessToken 저장 방식 변경 필요 혹은 token 관련 localStorage 로직 추상화
+    localStorage.setItem('accessToken', data.accessToken);
+    console.log('data', data.accessToken);
     // TODO PATH 정의 필요, 현재는 임시로 main으로 이동
     // push('/main')
-    console.log(values);
   };
   return (
     <div className="w-full">
