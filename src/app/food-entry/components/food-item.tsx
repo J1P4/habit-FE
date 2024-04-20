@@ -3,8 +3,9 @@ import { useFoodDrawerContext } from '@/app/food-entry/context/food-drawer-conte
 
 // TODO FoodItem Props로 전달이 아닌 Query 값으로 가져올 수는 없을지 고민
 const FoodItem = ({ id, name, energy, protein, moisture, fat }: FoodItemData) => {
-  const { onOpenChange } = useFoodDrawerContext();
+  const { onOpenChange, setOpenDrawerData } = useFoodDrawerContext();
   const onClickFoodItem = () => {
+    setOpenDrawerData(id, name);
     onOpenChange(true);
   };
   return (
