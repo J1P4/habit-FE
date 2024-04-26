@@ -1,3 +1,7 @@
+import axios from 'axios';
+import { useState, useEffect } from 'react';
+
+
 navigator.geolocation.getCurrentPosition((position) => {
   const { latitude, longitude } = position.coords;
   // 이후 단계 수행
@@ -25,4 +29,4 @@ const getAddressFromCoords = async (latitude, longitude) => {
 
 
 
-export default currentLocComponent;
+export default getAddressFromCoords;

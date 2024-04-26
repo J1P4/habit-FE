@@ -3,9 +3,13 @@ import React, { useState } from 'react';
 import HomeLayout from './layout';
 import Ment from './components/Ment';
 import FoodComponent from './components/Food';
+import {useRouter} from "next/navigation";
 
-const HomePage = () => {
-  const [food, setFood] = useState('김밥');
+const RFpage = () => {
+  const router = useRouter();
+
+  const [food, setFood] = useState('우동');
+
 
   return (
     <>
@@ -17,4 +21,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+export default RFpage;

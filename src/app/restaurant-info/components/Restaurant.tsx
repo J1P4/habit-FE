@@ -47,15 +47,11 @@ const RestaurantComponent = ({ food }: RestaurantComponentProps) => {
             // 주소를 공백으로 분리하여 배열로 만듭니다.
             const addressParts = address.split(' ');
 
-            // '동'이나 '로'와 같은 세부 정보를 찾습니다.
             const keyword = addressParts.find(part => part.includes('로') || part.includes('구'));
 
-            // 찾은 세부 정보를 반환합니다. 없으면 빈 문자열을 반환합니다.
             return keyword ? keyword : '';
           }
 
-
-          // '동'이나 '로'와 같은 세부 정보 추출
           const searchKeyword = extractSearchKeyword(address);
           
           console.log(searchKeyword);
@@ -63,8 +59,7 @@ const RestaurantComponent = ({ food }: RestaurantComponentProps) => {
           // 검색 키워드를 기반으로 식당 검색
           const localResponse = await axios.get<IGetlocalListResult>(BASE_PATH, {
             params: {
-              query: `${searchKeyword} ${food} `,
-              sort: "random",
+              query: `${searchKeyword} ${food}맛집 안심식당`,
               display: 10,
             },
             headers: {
@@ -73,6 +68,8 @@ const RestaurantComponent = ({ food }: RestaurantComponentProps) => {
               "X-Naver-Client-Secret": '0VNIsyrJNt',
             },
           });
+
+  
 
           const cleanedData = localResponse.data.items.map(item => ({
             ...item,
