@@ -10,13 +10,13 @@ export interface CreateUserInfoValues {
   age?: number;
 }
 
-interface UserInfoContext {
+interface UserInfoContextType {
   setValue<T extends keyof CreateUserInfoValues>(target: T, value: CreateUserInfoValues[T]): void;
   getValue<T extends keyof CreateUserInfoValues>(target: T): CreateUserInfoValues[T];
   getValues(): CreateUserInfoValues;
 }
 
-export const CreateUserInfoContext = createContext<UserInfoContext | undefined>(undefined);
+export const CreateUserInfoContext = createContext<UserInfoContextType | undefined>(undefined);
 
 export default function CreateUserInfoContextProvider({ children }: { children: React.ReactNode }) {
   const createUserInfoValues = useRef<CreateUserInfoValues>({} as CreateUserInfoValues);
