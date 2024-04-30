@@ -18,15 +18,28 @@ const FoodDrawer = () => {
     await mutateAsync({ foodId: drawerData.id });
     onOpenChange(false);
   };
+
+  const onCancel = () => {
+    onOpenChange(false);
+  };
   return (
     <Drawer open={isOpen} onOpenChange={onOpenChange}>
       {/*// TODO UI 수정*/}
-      <DrawerContent className="h-1/2">
-        <DrawerDescription>{drawerData?.name}을 추가하시겠어요?</DrawerDescription>
+      <DrawerContent className="h-1/3 ">
+        <DrawerDescription className="h-full flex items-center justify-center">
+          <div className="px-4 text-lg">
+            <span className="font-bold text-violet-500">{drawerData?.name}</span>을 추가하시겠어요?
+          </div>
+        </DrawerDescription>
         <DrawerFooter>
-          <Button className="w-full h-[60px]" onClick={onAddFood}>
-            추가하기
-          </Button>
+          <div className="flex gap-2">
+            <Button className="w-1/2 " onClick={onAddFood}>
+              추가하기
+            </Button>
+            <Button className="w-1/2" variant="destructive" onClick={onCancel}>
+              취소
+            </Button>
+          </div>
         </DrawerFooter>
       </DrawerContent>
     </Drawer>
