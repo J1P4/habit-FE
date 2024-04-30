@@ -10,7 +10,7 @@ export const instance = ky.create({
   hooks: {
     beforeRequest: [
       (request) => {
-        const accessToken = localStorage.getItem('accessToken');
+        const accessToken = sessionStorage.getItem('accessToken');
         if (accessToken) {
           request.headers.set('Authorization', `Bearer ${accessToken}`);
         }

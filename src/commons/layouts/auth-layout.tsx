@@ -7,7 +7,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
   const { push } = useRouter();
 
   useEffect(() => {
-    const isLogin = window.localStorage.getItem('accessToken');
+    const isLogin = window.sessionStorage.getItem('accessToken');
     if (!isLogin) push('/');
   }, [push]);
   return <>{children}</>;

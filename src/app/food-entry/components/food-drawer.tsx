@@ -20,7 +20,7 @@ const FoodDrawer = () => {
   };
   return (
     <Drawer open={isOpen} onOpenChange={onOpenChange}>
-      // TODO UI 수정
+      {/*// TODO UI 수정*/}
       <DrawerContent className="h-1/2">
         <DrawerDescription>{drawerData?.name}을 추가하시겠어요?</DrawerDescription>
         <DrawerFooter>
