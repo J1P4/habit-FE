@@ -6,6 +6,7 @@ import { ArrowLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { PATHS } from '@/commons/constants/paths';
 import SearchFoodListContextProvider from '@/app/food-entry/context/search-food-list-context';
+import FoodDrawerContextProvider from '@/app/food-entry/context/food-drawer-context';
 
 export default function FoodEntryLayout({ children }: { children: React.ReactNode }) {
   const { push } = useRouter();
@@ -23,7 +24,9 @@ export default function FoodEntryLayout({ children }: { children: React.ReactNod
       />
       {/*TODO Page 공통 padding 정의 후 컴포넌트화*/}
       <div className="px-4">
-        <SearchFoodListContextProvider>{children}</SearchFoodListContextProvider>
+        <SearchFoodListContextProvider>
+          <FoodDrawerContextProvider>{children}</FoodDrawerContextProvider>
+        </SearchFoodListContextProvider>
       </div>
     </MobileViewLayout>
   );

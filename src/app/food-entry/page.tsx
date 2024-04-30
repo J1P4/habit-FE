@@ -7,6 +7,7 @@ import { useIntersectionObserver } from '@/app/food-entry/hooks/useIntersectionO
 import FoodList from '@/app/food-entry/components/food-list';
 import useSearchInfiniteFoodList from '@/app/food-entry/api/queries/useSearchFoodList';
 import { useSearchFoodListContext } from '@/app/food-entry/context/search-food-list-context';
+import FoodDrawer from '@/app/food-entry/components/food-drawer';
 
 export default function FoodEntryPage() {
   const { setValue, getValue } = useSearchFoodListContext();
@@ -23,6 +24,7 @@ export default function FoodEntryPage() {
       />
       <div className="mb-4" />
       <FoodList />
+      <FoodDrawer />
     </>
   );
 }
