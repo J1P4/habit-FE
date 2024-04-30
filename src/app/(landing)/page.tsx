@@ -1,5 +1,5 @@
 'use client';
-import KakaoLoginButton from '@/app/home/components/KakaoLoginButton';
+import KakaoLoginButton from '@/app/(landing)/components/KakaoLoginButton';
 import FixedBottomWrapper from '@/commons/components/FixedBottomWrapper';
 
 export default function HomePage() {

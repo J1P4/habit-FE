@@ -1,12 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     async redirects() {
-        // / 에서 /home 으로 리디렉션
+        // / 에서 /(landing) 으로 리디렉션
         return [
             {
-                source: '/',
-                destination: '/home',
-                permanent: true
+                source: '/home',
+                destination: '/',
+                permanent: false
             }
         ];
     },
