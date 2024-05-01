@@ -15,6 +15,8 @@ interface MapComponentProps {
 const MapComponent: React.FC<MapComponentProps> = ({ localList }) => {
   const [selectedMarkerIndex, setSelectedMarkerIndex] = useState<number | null>(null);
   const [currentPosition, setCurrentPosition] = useState<GeolocationPosition | null>(null);
+  const DEFAULT_LATITUDE = 37.5665;
+  const DEFAULT_LONGITUDE = 126.9780;
   const DEFAULT_ZOOM = 13;
 
   useEffect(() => {
