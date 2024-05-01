@@ -1,77 +1,107 @@
+'use client';
+
 import React from 'react';
-import MobileViewLayout from '@/commons/layouts/MobileViewLayout';
+import { Chart as ChartJS, RadialLinearScale, ArcElement, Tooltip, Legend } from 'chart.js';
+import { PolarArea } from 'react-chartjs-2';
+
+ChartJS.register(RadialLinearScale, ArcElement, Tooltip, Legend);
 
 const DetailNutriInfoPage = () => {
+  const data = {
+    labels: ['탄수화물', '단백질', '지방'],
+    datasets: [
+      {
+        label: '# of Votes',
+        data: [42, 39, 80],
+        backgroundColor: [
+          'rgba(54, 162, 235, 0.5)',
+          'rgba(255, 99, 132, 0.5)',
+          'rgba(255, 206, 86, 0.5)',
+        ],
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  const options = {
+    scales: {
+      r: {
+        ticks: {
+          backdropColor: '#F4F9F3',
+        },
+        angleLines: {
+          display: false,
+        },
+        suggestedMin: 0,
+        suggestedMax: 100,
+      },
+    },
+  };
   return (
-    <MobileViewLayout>
-      {/* 상단 바 */}
-      <div className="flex justify-between items-center px-4 py-2 my-15 bg-gray-200">
-        {/* 날짜 선택 칸 */}
-        <div className="flex items-center">
-          <label htmlFor="datePicker" className="mr-2">날짜 선택:</label>
-          <input type="date" id="datePicker" />
-        </div>
-        {/* 기타 컨트롤이나 메뉴 등 */}
-      </div>
-
-      {/* 상세 영양소를 볼 수 있는 UI */}
-      <div className="p-4 bg-[#F4F9F3]">
-        
-        <div className="flex flex-wrap mb-2">
-          <div className="w-1/3 pr-4">
-          <div className="py-5 rounded-lg bg-white flex flex-col items-center mb-2">
-            <span className="font-semibold mb-1">단백질</span>
-            <span>20g</span>
-          </div>
-
-          </div>
-          <div className="w-1/3 pr-10">
-            <div className="bg-white bg-white flex flex-col items-center mb-2">
-              <span className="font-semibold mr-2">탄수화물</span> 
-              <span>30g</span>
-            </div>
-          </div>
-          <div className="w-1/3">
-            <div className="bg-white flex flex-col items-center mb-2">
-              <span className="font-semibold mr-2">지방</span>
-              <span>10g</span>
+    <>
+      <div>
+        <div className="bg-[#F4F9F3] w-full  pt-4 flex flex-col items-center pb-6">
+          <div className="text-[#FF9385]">04.03 수</div>
+          <div className="mb-10" />
+          <div className="flex gap-4 flex-col items-center w-full">
+            <PolarArea data={data} options={options} />
+            <div className="mb-2" />
+            <div className="flex justify-around w-full">
+              <div className="flex flex-col items-center max-w-[60px] w-full">
+                <div className="text-[#FF9385]">탄수화물</div>
+                <div>42g</div>
+              </div>
+              <div className="flex flex-col items-center max-w-[60px] w-full">
+                <div className="text-[#FF9385]">단백질</div>
+                <div>39g</div>
+              </div>
+              <div className="flex flex-col items-center max-w-[60px] w-full">
+                <div className="flex flex-col items-center">
+                  <div className="text-[#FF9385]">지방</div>
+                  <div>80g</div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-        {/* 추가적인 영양소 정보 등 */}
+        <div className="flex flex-col items-center py-6 px-4">
+          <div>영양정보</div>
+          <div className="flex flex-col items-center w-full">
+            <div className="flex w-full justify-between  border-b-[1px] py-4 items-center">
+              <div>총 열량</div>
+              <div className="text-xl">2300 Kcal</div>
+            </div>
+            <ul className="w-full">
+              <li>
+                <div className="flex justify-between py-4">
+                  <div>탄수화물</div>
+                  <div>21g</div>
+                </div>
+              </li>
+              <li>
+                <div className="flex justify-between py-4">
+                  <div>단백질</div>
+                  <div>6g</div>
+                </div>
+              </li>
+              <li>
+                <div className="flex justify-between py-4">
+                  <div>지방</div>
+                  <div>6g</div>
+                </div>
+              </li>
+              <li>
+                <div className="flex justify-between py-4">
+                  <div>비타민A</div>
+                  <div>4g</div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
-
-
-       {/* 상세 영양소를 볼 수 있는 UI */}
-       <div className="p-4">
-        {/* 상세 영양소 정보 */}
-       
-        <table className="table-auto">
-          <thead>
-            <tr>
-              <th className="px-4 py-2">영양소</th>
-              <th className="px-4 py-2">양</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td className="border px-4 py-2">단백질</td>
-              <td className="border px-4 py-2">20g</td>
-            </tr>
-            <tr>
-              <td className="border px-4 py-2">탄수화물</td>
-              <td className="border px-4 py-2">30g</td>
-            </tr>
-            <tr>
-              <td className="border px-4 py-2">지방</td>
-              <td className="border px-4 py-2">10g</td>
-            </tr>
-            {/* 추가적인 영양소 정보 등 */}
-          </tbody>
-        </table>
-      </div>
-    </MobileViewLayout>
+    </>
   );
-}
+};
 
 export default DetailNutriInfoPage;
