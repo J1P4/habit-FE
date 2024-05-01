@@ -1,8 +1,17 @@
 import { fetcher } from '@/commons/apis/fetcher';
 import { useMutation } from '@tanstack/react-query';
 
+const Time = {
+  BREAKFAST: 'BREAKFAST',
+  LUNCH: 'LUNCH',
+  DINNER: 'DINNER',
+} as const;
+
+export type TimeType = (typeof Time)[keyof typeof Time];
+
 interface AddFoodEntryRequest {
   foodId: number;
+  time: TimeType;
 }
 
 interface AddFoodEntryResponse {

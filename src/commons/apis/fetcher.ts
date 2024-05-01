@@ -20,6 +20,11 @@ export const instance = ky.create({
       async (request, options, response) => {
         if (!response.ok) {
           const body = await response.json();
+          const { status } = response;
+          if (status === 401) {
+            sessionStorage.removeItem('accessToken');
+            window.location.href = '/';
+          }
           if (body) {
             throw new Error(body.message);
           }
