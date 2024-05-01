@@ -34,9 +34,9 @@ const FoodDrawer = () => {
   };
   const onAddFood = async () => {
     //TODO drawerData가 없을 경우 예외처리 로직 고민
-    if (!drawerData?.id) return;
+    if (!drawerData?.id || !time) return;
     // TODO featcher 함수에서 에러 처리 로직 정의
-    await mutateAsync({ foodId: drawerData.id, time: 'BREAKFAST' });
+    await mutateAsync({ foodId: drawerData.id, time });
     onOpenChange(false);
     toast({
       title: '음식이 추가되었어요!',
@@ -44,7 +44,6 @@ const FoodDrawer = () => {
   };
 
   const onSelectTime = (value: string) => {
-    console.log('value', value);
     setTime(value as TimeType);
   };
 
