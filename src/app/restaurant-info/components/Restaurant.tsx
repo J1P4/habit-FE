@@ -1,5 +1,10 @@
+//Restaurant.tsx
+
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useState, useEffect } from 'react';
+import MapComponent from './MapComponent';
+import RestaurantLinkIcon from '..//restaurant-link-icon';
+import { GoogleMap, Marker, LoadScript, InfoWindow } from '@react-google-maps/api';
 
 interface Ilocal {
   title: string;
@@ -9,7 +14,7 @@ interface Ilocal {
   total: number;
 }
 
-export interface IGetlocalListResult {
+interface IGetlocalListResult {
   items: Ilocal[];
 }
 
@@ -17,46 +22,31 @@ interface RestaurantComponentProps {
   food: string;
 }
 
-const RestaurantComponent = ({ food }: RestaurantComponentProps) => {
-  const BASE_PATH = "/v1/search/local.json?";
+const RestaurantComponent: React.FC<RestaurantComponentProps> = ({ food }) => {
+  const [selectedMarkerIndex, setSelectedMarkerIndex] = useState<number | null>(null);
   const [localList, setlocalList] = useState<Ilocal[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const BASE_PATH = "/v1/search/local.json?";
 
   useEffect(() => {
     const fetchlocalList = async () => {
       try {
-        // 사용자의 현재 위치 가져오기
         navigator.geolocation.getCurrentPosition(async (position) => {
           const { latitude, longitude } = position.coords;
-
-          // 위치 정보를 주소로 변환
           const response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json`, {
             params: {
               latlng: `${latitude},${longitude}`,
-              key: 'AIzaSyCFsJnEaYAZ0r-Ln8haZIzGcP3t2McU3dc'
+              key: 'AIzaSyCwrWwOutdytyZU67z3z5a9KmrewnqoCcc'
             }
           });
-
           const address = response.data.results[0].formatted_address;
-
-          const decodedAddress = decodeURIComponent(address);
-
-          // 사용자의 현재 주소에서 '동'이나 '로'와 같은 세부 정보를 추출하는 함수
           function extractSearchKeyword(address: string): string {
-            // 주소를 공백으로 분리하여 배열로 만듭니다.
             const addressParts = address.split(' ');
-
             const keyword = addressParts.find(part => part.includes('로') || part.includes('구'));
-
             return keyword ? keyword : '';
           }
-
           const searchKeyword = extractSearchKeyword(address);
-          
-          console.log(searchKeyword);
-
-          // 검색 키워드를 기반으로 식당 검색
           const localResponse = await axios.get<IGetlocalListResult>(BASE_PATH, {
             params: {
               query: `${searchKeyword} ${food}맛집 안심식당`,
@@ -68,17 +58,26 @@ const RestaurantComponent = ({ food }: RestaurantComponentProps) => {
               "X-Naver-Client-Secret": '0VNIsyrJNt',
             },
           });
-
-  
-
-          const cleanedData = localResponse.data.items.map(item => ({
-            ...item,
-            title: item.title.replace(/(<([^>]+)>)/gi, ""),
-            roadAddress: item.roadAddress.replace(/(<([^>]+)>)/gi, ""),
-            description: item.description.replace(/(<([^>]+)>)/gi, "")
+          const updatedlocalList = await Promise.all(localResponse.data.items.map(async (item) => {
+            try {
+              const response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json`, {
+                params: {
+                  address: item.roadAddress,
+                  key: 'AIzaSyCwrWwOutdytyZU67z3z5a9KmrewnqoCcc'
+                }
+              });
+              const location = response.data.results[0].geometry.location;
+              function removeHTMLTags(string) {
+                return string.replace(/<[^>]*>/g, '');
+              }
+              const cleanedTitle = removeHTMLTags(item.title);
+              return { ...item, latitude: location.lat, longitude: location.lng, title: cleanedTitle };
+            } catch (error) {
+              console.error('Error converting address to coordinates:', error);
+              return item;
+            }
           }));
-
-          setlocalList(cleanedData);
+          setlocalList(updatedlocalList);
           setLoading(false);
         }, (error) => {
           console.error('Error getting current position:', error);
@@ -91,28 +90,32 @@ const RestaurantComponent = ({ food }: RestaurantComponentProps) => {
         setLoading(false);
       }
     };
-
     fetchlocalList();
   }, [food]);
-
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <div className="bg-gray-100 rounded-lg mx-10">
-      <div className="mt-4 h-full">
-        <ul >
+    <div className="mx-10 h-screen">
+      <MapComponent localList={localList} />
+      <div className="bg-gray-100 rounded-lg m-4 overflow-y-scroll" style={{ maxHeight: '400px' }}>
+        <ul className='py-1'>
           {localList.map((local, index) => (
-            <li key={index} className="p-5 m-5 bg-white rounded-lg">
+            <li key={index} className="pl-4 p-3 m-3 bg-white rounded-lg flex items-center">
               {local.total && <div>{local.total}</div>}
-              <div >
-              <h3 className="leading-extra-loose text-base font-semibold">{local.title.replace(/&amp;/g, '&')}</h3>
+              <div className="flex-1">
+                <h3 className="leading-extra-loose text-base font-semibold">{local.title.replace(/&amp;/g, '&')}</h3>
                 <p className="leading-extra-loose text-xs font-semibold text-gray-600">{local.roadAddress}</p>
                 <p className="leading-extra-loose text-xs text-gray-600">{local.description}</p>
-                <p className="leading-extra-loose text-xs text-gray-600"> <a href={local.link} target="_blank" rel="noopener noreferrer"> 식당 링크</a>
-                </p>
               </div>
+              {local.link && (
+                <p className="leading-extra-loose text-xs text-gray-600 mr-1.5">
+                  <a href={local.link} target="_blank" rel="noopener noreferrer">
+                    <RestaurantLinkIcon></RestaurantLinkIcon>
+                  </a>
+                </p>
+              )}
             </li>
           ))}
         </ul>
