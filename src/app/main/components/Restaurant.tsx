@@ -2,8 +2,9 @@
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import MapComponent from './MapComponent';
-import RestaurantLinkIcon from '..//restaurant-link-icon';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
 interface Ilocal {
   title: string;
@@ -49,7 +50,7 @@ const RestaurantComponent: React.FC<RestaurantComponentProps> = ({ food }) => {
           const localResponse = await axios.get<IGetlocalListResult>(BASE_PATH, {
             params: {
               query: `${searchKeyword} ${food}맛집 안심식당`,
-              display: 10,
+              display: 5,
             },
             headers: {
               "X-Requested-With": "XMLHttpRequest",
@@ -95,30 +96,49 @@ const RestaurantComponent: React.FC<RestaurantComponentProps> = ({ food }) => {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
 
+
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1, // 캐러셀에서 한 번에 표시할 항목 수
+    slidesToScroll: 1,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          infinite: true,
+          dots: true
+        }
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          initialSlide: 1
+        }
+      }
+    ]
+  };
+
+
   return (
-    <div className="mx-10 h-screen">
-      <MapComponent localList={localList} />
-      <div className="bg-gray-100 rounded-lg m-4 overflow-y-scroll" style={{ maxHeight: '400px' }}>
-        <ul className='py-1'>
-          {localList.map((local, index) => (
-            <li key={index} className="pl-4 p-3 m-3 bg-white rounded-lg flex items-center">
-              {local.total && <div>{local.total}</div>}
-              <div className="flex-1">
-                <h3 className="leading-extra-loose text-base font-semibold">{local.title.replace(/&amp;/g, '&')}</h3>
-                <p className="leading-extra-loose text-xs font-semibold text-gray-600">{local.roadAddress}</p>
-                <p className="leading-extra-loose text-xs text-gray-600">{local.description}</p>
-              </div>
-              {local.link && (
-                <p className="leading-extra-loose text-xs text-gray-600 mr-1.5">
-                  <a href={local.link} target="_blank" rel="noopener noreferrer">
-                    <RestaurantLinkIcon></RestaurantLinkIcon>
-                  </a>
-                </p>
-              )}
-            </li>
-          ))}
-        </ul>
-      </div>
+    <div className="mx-5 h-300 border border-solid border-[#EBEBEB] rounded-lg">
+      <Slider {...settings}>
+        {localList.map((local, index) => (
+          <div key={index} className="pl-4 p-3 m-3  flex items-center">
+            {local.total && <div>{local.total}</div>}
+            <div className="flex-1">
+              <h3 className="leading-extra-loose text-base font-semibold">{local.title.replace(/&amp;/g, '&')}</h3>
+              <p className="leading-extra-loose text-xs font-semibold text-gray-600">{local.roadAddress}</p>
+              <p className="leading-extra-loose text-xs text-gray-600">{local.description}</p>
+            </div>
+          </div>
+        ))}
+      </Slider>
     </div>
   );
 };

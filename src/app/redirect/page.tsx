@@ -14,8 +14,8 @@ export default function Page() {
     console.log('role', role);
 
     if (!accessToken) return;
-    window.localStorage.setItem('accessToken', accessToken);
-    role === 'GUEST' ? push('/create-user-info') : push('/');
+    window.sessionStorage.setItem('accessToken', accessToken);
+    role === 'GUEST' ? push('/create-user-info') : push('/main');
   }, [searchParams]);
 
   return <></>;

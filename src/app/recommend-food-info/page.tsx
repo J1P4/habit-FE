@@ -15,7 +15,7 @@ const RFpage = () => {
     <>
       <HomeLayout>
         <Ment/>
-        <FoodComponent food={food}/>
+        <FoodComponent/>
       </HomeLayout> 
     </>
   );

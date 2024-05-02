@@ -37,7 +37,7 @@ const SelectUserGenderAgeRange = () => {
       age: Number(values.age),
     });
     // TODO accessToken 저장 방식 변경 필요 혹은 token 관련 localStorage 로직 추상화
-    localStorage.setItem('accessToken', data.accessToken);
+    sessionStorage.setItem('accessToken', data.accessToken);
     console.log('data', data.accessToken);
     push(PATHS.메인);
   };

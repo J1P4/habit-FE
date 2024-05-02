@@ -10,7 +10,7 @@ export const instance = ky.create({
   hooks: {
     beforeRequest: [
       (request) => {
-        const accessToken = localStorage.getItem('accessToken');
+        const accessToken = sessionStorage.getItem('accessToken');
         if (accessToken) {
           request.headers.set('Authorization', `Bearer ${accessToken}`);
         }
@@ -20,6 +20,11 @@ export const instance = ky.create({
       async (request, options, response) => {
         if (!response.ok) {
           const body = await response.json();
+          const { status } = response;
+          if (status === 401) {
+            sessionStorage.removeItem('accessToken');
+            window.location.href = '/';
+          }
           if (body) {
             throw new Error(body.message);
           }
