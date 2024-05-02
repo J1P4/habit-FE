@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
+import { fetcher } from '@/commons/apis/fetcher';
 
 const FoodComponent = () => {
   const [foodList, setFoodList] = useState([]);
@@ -9,19 +10,25 @@ const FoodComponent = () => {
 
   useEffect(() => {
     const fetchFoodList = async () => {
-      try {
-        const response = await axios.post('/api/v1/food/recommend/ai', {});
-        const { data } = response.data;
-        if (data && data.foodlist) {
-          setFoodList(data.foodlist);
-        } else {
-          setError('No food data available');
-        }
-        setLoading(false);
-      } catch (error) {
-        setError(error.message);
-        setLoading(false);
-      }
+      const data = await fetcher.get('api/v1/food/recommend/ai', {});
+      console.log('data', data);
+      // try {
+      //   const response = await axios.post(
+      //     `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/api/v1/food/recommend/ai`,
+      //     {},
+      //     { headers: { 'Content-Type': 'application/json' } },
+      //   );
+      //   const { data } = response.data;
+      //   if (data && data.foodlist) {
+      //     setFoodList(data.foodlist);
+      //   } else {
+      //     setError('No food data available');
+      //   }
+      //   setLoading(false);
+      // } catch (error) {
+      //   setError(error.message);
+      //   setLoading(false);
+      // }
     };
 
     fetchFoodList();
@@ -45,7 +52,7 @@ const FoodComponent = () => {
             <p className="text-sm text-[#6CB663]">{food.calories}kcal</p>
             <h4 className="text-lg font-semibold">{food.name}</h4>
             <p className="text-sm text-gray-600">음식 주요 성분</p>
-            <Link href={{ pathname: '/restaurant-info',  query: { food: food.name } }}>
+            <Link href={{ pathname: '/restaurant-info', query: { food: food.name } }}>
               <button>추천 식당 보기</button>
             </Link>
           </div>
