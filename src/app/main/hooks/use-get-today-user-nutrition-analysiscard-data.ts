@@ -8,7 +8,6 @@ const useGetTodayUserNutritionAnalysiscardData = () => {
   const { data, isLoading } = useGetUserNutrients(today); // 오늘날짜를 사용하여 영양분 데이터 및 로딩 상태를 가져옴
   const essentialNutrition = data?.data?.essentialNutritionDto as NutrientData | undefined; // TypeScript 타입 단언을 사용하여 essentialNutrition을 NutrientData 타입으로 선언
   const totalData = data?.data?.historiesDto.total as NutrientData | undefined; // TypeScript 타입 단언을 사용하여 totalData를 NutrientData 타입으로 선언
-  console.log('totalData', totalData);
   // 영양분 요약 데이터 구성
   const summary = {
     essentialCarbohydrate: Math.round(essentialNutrition?.carbohydrate ?? 0), // 필수 탄수화물

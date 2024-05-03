@@ -1,4 +1,5 @@
 import { Button } from '@/commons/components/ui/button';
+import { useRouter } from 'next/navigation';
 
 export interface summaryNutrients {
   carbohydrate: number;
@@ -16,6 +17,11 @@ const TodayUserNutritionAnalysisCard = ({
 }: TodayUserNutritionAnalysisCardProps) => {
   const { carbohydrate, protein, fat, essentialCarbohydrate, essentialProtein, essentialFat } =
     summaryNutrients;
+
+  const { push } = useRouter();
+  const gotoDetailPage = () => {
+    push('/detail-nutri-info');
+  };
   return (
     <div className="w-full flex flex-col bg-[#F4F9F3] rounded-[30px] py-4 px-5 items-center">
       <div className="flex gap-5 justify-center">
@@ -39,7 +45,9 @@ const TodayUserNutritionAnalysisCard = ({
         </div>
       </div>
       <div className="mt-10" />
-      <Button className="w-[200px] bg-[#FF9385] rounded-[10px]">자세히 보기</Button>
+      <Button className="w-[200px] bg-[#FF9385] rounded-[10px]" onClick={gotoDetailPage}>
+        자세히 보기
+      </Button>
     </div>
   );
 };
