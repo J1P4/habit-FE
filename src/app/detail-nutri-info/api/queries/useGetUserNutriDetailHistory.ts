@@ -45,8 +45,9 @@ export interface NutrientData {
   moisture: number;
 }
 
-interface ExtendedNutrientData extends NutrientData, TimeData {
+export interface ExtendedNutrientData extends NutrientData, TimeData {
   foodName: string;
+  historyId: number;
 }
 
 interface FoodsNutrientData {
@@ -59,7 +60,7 @@ interface ResponseUserNurtiDetailHistory {
   data: {
     allTotal: ExtendedNutrientData;
     essentialNutritionDto: NutrientData;
-    historiesDtoList: FoodsNutrientData;
+    historiesDtoList: FoodsNutrientData[];
   };
   error: any;
 }
