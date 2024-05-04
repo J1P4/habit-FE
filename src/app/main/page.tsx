@@ -1,3 +1,4 @@
+// src/app/main/page.tsx
 'use client';
 import React, { useState } from 'react';
 import { Button } from '@/commons/components/ui/button';
@@ -43,8 +44,6 @@ export default function MainPage() {
       <RestaurantComponent food={food}></RestaurantComponent>
       </div>
     
-      
-      
       
     </div>
 
