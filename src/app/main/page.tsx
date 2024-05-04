@@ -17,11 +17,16 @@ export default function MainPage() {
     push('/food-entry');
   };
 
+  const goToModiNurti = () => {
+    push('/modi-nurti');
+  };
+
   return (
     <div className="flex flex-col items-center">
       <Headline title="오늘의 영양 분석 보고서 입니다" />
       <TodayUserNutritionAnalysisCard summaryNutrients={summary} />
       <Button onClick={goToTodayFood}>오늘 먹은 음식 입력하러 가기</Button>
+      <Button onClick={goToModiNurti}>오늘의 영양분 분석 수정하러 가기</Button>
     </div>
   );
 }

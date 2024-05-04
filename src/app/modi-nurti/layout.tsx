@@ -5,9 +5,8 @@ import { Header } from '@/commons/components/header/header';
 import { ArrowLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { PATHS } from '@/commons/constants/paths';
-import AuthLayout from '@/commons/layouts/auth-layout';
 
-export default function ModiLayout({ children }: { children: React.ReactNode }) {
+export default function HomeLayout({ children }: { children: React.ReactNode }) {
   const { push } = useRouter();
 
   const onLeftClick = () => {
@@ -15,16 +14,14 @@ export default function ModiLayout({ children }: { children: React.ReactNode }) 
   };
   return (
     <MobileViewLayout>
-      <AuthLayout>
-        <Header
-          leftSideButton={
-            <button className="flex h-full w-[16px] items-center " onClick={onLeftClick}>
-              <ArrowLeft />
-            </button>
-          }
-        />
-        {children}
-      </AuthLayout>
+      <Header
+        leftSideButton={
+          <button className="flex h-full w-[16px] items-center " onClick={onLeftClick}>
+            <ArrowLeft />
+          </button>
+        }
+      />
+      {children}
     </MobileViewLayout>
   );
 }
