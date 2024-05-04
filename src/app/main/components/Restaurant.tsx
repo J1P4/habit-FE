@@ -139,7 +139,7 @@ const RestaurantComponent: React.FC<RestaurantComponentProps> = ({ food }) => {
   };
 
   return (
-    <div className="mx-5 h-300 border border-solid border-[#EBEBEB] rounded-lg">
+    <div className="mx-5 h-full border border-solid border-[#EBEBEB] rounded-lg">
       <Slider {...settings}>
         {localList.map((local, index) => (
           <div key={index} className="pl-4 p-3 m-3  flex items-center">
