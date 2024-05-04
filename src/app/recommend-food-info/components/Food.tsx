@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-const FoodComponent = ({ food }) => {
+const FoodComponent = ({ food }: any) => {
   return (
     <div className="flex items-center bg-gray-100 mx-10 my-3 p-5 rounded-lg">
       <div className="flex-shrink-0 mr-4">
@@ -23,7 +23,6 @@ const FoodComponent = ({ food }) => {
 };
 
 export default FoodComponent;
-
 
 /*
 import Link from 'next/link';
