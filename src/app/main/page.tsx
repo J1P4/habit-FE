@@ -33,13 +33,13 @@ export default function MainPage() {
         <TodayUserNutritionAnalysisCard summaryNutrients={summary} />
         <Button onClick={goToTodayFood}>오늘 먹은 음식 입력하러 가기</Button>
         <Button onClick={goToModiNurti}>오늘의 영양분 분석 수정하러 가기</Button>
-        {/*<div>*/}
-        {/*  <Ment></Ment>*/}
-        {/*  <FoodComponent food={food}></FoodComponent>*/}
-        {/*  <div className="flex flex-col h-50">*/}
-        {/*    <RestaurantComponent food={food}></RestaurantComponent>*/}
-        {/*  </div>*/}
-        {/*</div>*/}
+        <div>
+         <Ment></Ment>
+        <FoodComponent food={food}></FoodComponent>
+        <div className="flex flex-col h-50">
+        <RestaurantComponent food={food}></RestaurantComponent>
+        </div>
+        </div>
       </div>
     </div>
   );

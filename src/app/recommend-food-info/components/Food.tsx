@@ -55,13 +55,12 @@ const FoodComponent = () => {
 
           <div className="ml-auto text-center bg-gray-100 rounded-lg p-3">
           <div className="flex flex-col">
-          
           </div>
         </div>
 
           {/* 추천 식당 보기 버튼을 오른쪽으로 이동 */}
           <div className="ml-auto">
-          <Link href={{ pathname: '/restaurant-info', query: { food: food.name } }}>
+          <Link href={{ pathname: '/restaurant-info', query: { food: food.name, category: food.category} }}>
             <RestaurantIcon></RestaurantIcon>
           </Link>
           </div>

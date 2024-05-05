@@ -8,9 +8,6 @@ import {useRouter} from "next/navigation";
 const RFpage = () => {
   const router = useRouter();
 
-  const [food, setFood] = useState('우동');
-
-
   return (
     <>
       <HomeLayout>
