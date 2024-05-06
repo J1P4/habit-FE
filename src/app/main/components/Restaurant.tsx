@@ -1,150 +1,55 @@
 //Restaurant.tsx
 
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
-
-interface Ilocal {
-  title: string;
-  link: string;
-  roadAddress: string;
-  description: string;
-  total: number;
-}
-
-interface IGetlocalListResult {
-  items: Ilocal[];
-}
+import React, { useState, useRef } from 'react';
+import Autoplay from 'embla-carousel-autoplay';
+import { Carousel, CarouselContent, CarouselItem } from '@/commons/components/ui/carousel';
+import useCurrentPosition from '@/app/main/api/queries/useCurrentPosition';
+import useGoogleApiInfo from '@/app/main/api/queries/useGoogleApiInfo';
+import extractSearchKeyword from '@/app/main/uitls/extractSearchKeyword';
+import useSearchRestaurant from '@/app/main/api/queries/useSearchRestaurant';
 
 interface RestaurantComponentProps {
   food: string;
 }
 
 const RestaurantComponent: React.FC<RestaurantComponentProps> = ({ food }) => {
-  const [selectedMarkerIndex, setSelectedMarkerIndex] = useState<number | null>(null);
-  const [localList, setlocalList] = useState<Ilocal[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-  const BASE_PATH = `/v1/search/local.json?`;
+  const plugin = useRef(Autoplay({ delay: 2000, stopOnInteraction: true }));
+  const { data: currentPosition, isLoading: isCurrentPositionLoading } = useCurrentPosition();
+  const latitude = currentPosition?.coords?.latitude as string;
+  const longitude = currentPosition?.coords?.longitude as string;
 
-  useEffect(() => {
-    const fetchlocalList = async () => {
-      try {
-        navigator.geolocation.getCurrentPosition(
-          async (position) => {
-            const { latitude, longitude } = position.coords;
-            const response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json`, {
-              params: {
-                latlng: `${latitude},${longitude}`,
-                key: 'AIzaSyCwrWwOutdytyZU67z3z5a9KmrewnqoCcc',
-              },
-            });
-            const address = response.data.results[0].formatted_address;
-            function extractSearchKeyword(address: string): string {
-              const addressParts = address.split(' ');
-              const keyword = addressParts.find(
-                (part) => part.includes('로') || part.includes('구'),
-              );
-              return keyword ? keyword : '';
-            }
-            const searchKeyword = extractSearchKeyword(address);
-            const localResponse = await axios.get<IGetlocalListResult>(BASE_PATH, {
-              params: {
-                query: `${searchKeyword} ${food}맛집 안심식당`,
-                display: 5,
-              },
-              headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'X-Naver-Client-Id': 'DS9Rk5eeFu3hi4cYgc6G',
-                'X-Naver-Client-Secret': '0VNIsyrJNt',
-              },
-            });
-            const updatedlocalList = await Promise.all(
-              localResponse.data.items.map(async (item) => {
-                try {
-                  const response = await axios.get(
-                    `https://maps.googleapis.com/maps/api/geocode/json`,
-                    {
-                      params: {
-                        address: item.roadAddress,
-                        key: 'AIzaSyCwrWwOutdytyZU67z3z5a9KmrewnqoCcc',
-                      },
-                    },
-                  );
-                  const location = response.data.results[0].geometry.location;
-                  function removeHTMLTags(string) {
-                    return string.replace(/<[^>]*>/g, '');
-                  }
-                  const cleanedTitle = removeHTMLTags(item.title);
-                  return {
-                    ...item,
-                    latitude: location.lat,
-                    longitude: location.lng,
-                    title: cleanedTitle,
-                  };
-                } catch (error) {
-                  console.error('Error converting address to coordinates:', error);
-                  return item;
-                }
-              }),
-            );
-            setlocalList(updatedlocalList);
-            setLoading(false);
-          },
-          (error) => {
-            console.error('Error getting current position:', error);
-            setLoading(false);
-            setError('Failed to get current position');
-          },
-        );
-      } catch (error) {
-        console.error('Error fetching local:', error);
-        setError('Failed to fetch local');
-        setLoading(false);
-      }
-    };
-    fetchlocalList();
-  }, [food]);
+  const { data: googleApiInfo, isLoading: isGoogleApiLoading } = useGoogleApiInfo(
+    latitude,
+    longitude,
+  );
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
+  const address = googleApiInfo?.data.results[0].formatted_address;
 
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1, // 캐러셀에서 한 번에 표시할 항목 수
-    slidesToScroll: 1,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-          infinite: true,
-          dots: true,
-        },
-      },
-      {
-        breakpoint: 600,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-          initialSlide: 1,
-        },
-      },
-    ],
-  };
+  const searchKeyword = extractSearchKeyword(address);
+  const { data: localResponse, isLoading: isSearchRestaurantLoading } = useSearchRestaurant(
+    searchKeyword,
+    food,
+  );
+
+  console.log('localResponse', localResponse);
+
+  if (isGoogleApiLoading || isCurrentPositionLoading || isSearchRestaurantLoading)
+    return <p>위치를 기반하여 식당 정보를 가져오고 있습니다!</p>;
 
   return (
-    <div className="mx-5 h-full border border-solid border-[#EBEBEB] rounded-lg">
-      <Slider {...settings}>
-        {localList.map((local, index) => (
-          <div key={index} className="pl-4 p-3 m-3  flex items-center">
-            {local.total && <div>{local.total}</div>}
-            <div className="flex-1">
+    <Carousel
+      plugins={[plugin.current]}
+      onMouseEnter={plugin.current.stop}
+      onMouseLeave={plugin.current.reset}
+    >
+      <CarouselContent className="mx-0">
+        {localResponse?.data.items.map((local, index) => (
+          <CarouselItem
+            key={index}
+            className="mx-5 h-full border  border-[#EBEBEB] rounded-lg w-full  m-0 pl-0 pr-0 pt-0"
+          >
+            <div key={index} className="flex flex-col items-center">
+              {local.total && <div>{local.total}</div>}
               <h3 className="leading-extra-loose text-base font-semibold">
                 {local.title.replace(/&amp;/g, '&')}
               </h3>
@@ -153,10 +58,10 @@ const RestaurantComponent: React.FC<RestaurantComponentProps> = ({ food }) => {
               </p>
               <p className="leading-extra-loose text-xs text-gray-600">{local.description}</p>
             </div>
-          </div>
+          </CarouselItem>
         ))}
-      </Slider>
-    </div>
+      </CarouselContent>
+    </Carousel>
   );
 };
 
