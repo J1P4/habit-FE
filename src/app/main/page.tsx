@@ -18,8 +18,8 @@ export default function MainPage() {
 
   const { data, isLoading } = useRecommendFood();
 
-  const recommendFood = data?.data.foodList[0].name;
-  console.log('recommendFood', recommendFood);
+  // const recommendFood = data?.data?.foodList[0].name ?? [];
+  // console.log('recommendFood', recommendFood);
 
   const [food, setFood] = useState('우동');
 
@@ -41,9 +41,8 @@ export default function MainPage() {
         {/*<Button onClick={goToModiNurti}>오늘의 영양분 분석 수정하러 가기</Button>*/}
         <Ment></Ment>
         <FoodComponent food={food}></FoodComponent>
-        <div>
-          <RestaurantComponent food={food}></RestaurantComponent>
-        </div>
+        <div className="mb-4" />
+        <RestaurantComponent food={food}></RestaurantComponent>
       </div>
       <FixedBottomWrapper>
         <Button className="w-full bg-[#FF9385] rounded-[10px] py-6 " onClick={goToTodayFood}>

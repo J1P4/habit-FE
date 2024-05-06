@@ -82,7 +82,7 @@ export default function StepContainer() {
         }}
         className="w-full"
       >
-        <CarouselContent className="m-0 p-0 h-dvh w-full">
+        <CarouselContent className="m-0 p-0 h-[calc(100vh-50px)] w-full">
           {STEPS.map((step, idx) => (
             <CarouselContainer key={idx}>{step}</CarouselContainer>
           ))}

@@ -27,11 +27,10 @@ const FoodComponent = () => {
         setLoading(false);
       }
     };
-  
+
     fetchFoodList();
   }, []);
 
-  
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
 
@@ -39,30 +38,30 @@ const FoodComponent = () => {
     <div>
       {foodlist.map((food, index) => (
         <div key={index} className="flex items-center bg-gray-100 mx-10 my-3 p-5 rounded-lg">
-          <div className="flex-shrink-0 mr-4">
-            {/* 이미지를 표시할 부분 */}
-          </div>
           <div className="flex flex-col ">
             <p className="text-sm text-[#6CB663]">{food.energy}kcal</p>
             <h4 className="text-lg font-semibold">{food.name}</h4>
-            <div className='flex'>
-                <p className="text-sm mr-2 text-[#767676]">탄 {food.moisture}g | </p> 
-                <p className="text-sm mr-2 text-[#767676]">단 {food.protein}g | </p>
-                <p className="text-sm mr-2 text-[#767676]">지 {food.fat}g</p>
+            <div className="flex">
+              <p className="text-sm mr-2 text-[#767676]">탄 {food.moisture}g | </p>
+              <p className="text-sm mr-2 text-[#767676]">단 {food.protein}g | </p>
+              <p className="text-sm mr-2 text-[#767676]">지 {food.fat}g</p>
             </div>
-            
           </div>
 
           <div className="ml-auto text-center bg-gray-100 rounded-lg p-3">
-          <div className="flex flex-col">
+            <div className="flex flex-col"></div>
           </div>
-        </div>
 
           {/* 추천 식당 보기 버튼을 오른쪽으로 이동 */}
           <div className="ml-auto">
-          <Link href={{ pathname: '/restaurant-info', query: { food: food.name, category: food.category} }}>
-            <RestaurantIcon></RestaurantIcon>
-          </Link>
+            <Link
+              href={{
+                pathname: '/restaurant-info',
+                query: { food: food.name, category: food.category },
+              }}
+            >
+              <RestaurantIcon></RestaurantIcon>
+            </Link>
           </div>
         </div>
       ))}

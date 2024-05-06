@@ -46,7 +46,7 @@ const RestaurantComponent: React.FC<RestaurantComponentProps> = ({ food }) => {
         {localResponse?.data.items.map((local, index) => (
           <CarouselItem
             key={index}
-            className="mx-5 h-full border  border-[#EBEBEB] rounded-lg w-full  m-0 pl-0 pr-0 pt-0"
+            className="mx-5 h-full border  border-[#EBEBEB] rounded-lg w-full  m-0 px-4 py-4"
           >
             <div key={index} className="flex flex-col items-center">
               {local.total && <div>{local.total}</div>}

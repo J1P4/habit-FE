@@ -9,7 +9,6 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useSearchParams } from 'next/navigation';
 
 export default function RIPage() {
-  const pathname = usePathname();
   const router = useRouter();
   const params = useSearchParams();
 
@@ -26,9 +25,9 @@ export default function RIPage() {
   }
 
   return (
-    <MobileViewLayout>
+    <>
       <Ment />
       <RestaurantComponent food={foodParam} />
-    </MobileViewLayout>
+    </>
   );
 }
