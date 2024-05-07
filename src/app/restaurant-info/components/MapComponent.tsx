@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { GoogleMap, LoadScript, Marker, InfoWindow } from '@react-google-maps/api';
-import proj4 from 'proj4';
 interface Ilocal {
   title: string;
   latitude?: number;
@@ -44,7 +43,7 @@ const MapComponent: React.FC<MapComponentProps> = ({ localList }) => {
             center={{ lat: currentPosition.coords.latitude, lng: currentPosition.coords.longitude }} // 현재 위치를 기준으로 지도 중심 설정
             zoom={DEFAULT_ZOOM}
           >
-            {localList?.map((local, index) => {
+            {localList?.map((local: any, index: any) => {
               // const [longitude, latitude] = proj4(srcCoord, destCoord, [local.mapx, local.mapy]);
               // console.log('local', local, longitude, latitude);
               return (

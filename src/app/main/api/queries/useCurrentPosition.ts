@@ -1,6 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
 
-const getCurrentPosition = () => {
+interface Position {
+  coords: {
+    latitude: number;
+    longitude: number;
+  };
+}
+
+const getCurrentPosition = (): Promise<Position> => {
   return new Promise((resolve, reject) => {
     navigator.geolocation.getCurrentPosition(resolve, reject);
   });

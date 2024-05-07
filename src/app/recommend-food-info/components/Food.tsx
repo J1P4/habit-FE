@@ -7,6 +7,7 @@ import { fetcher } from '@/commons/apis/fetcher';
 import RestaurantIcon from './restaurant-icon';
 import { Button } from '@/commons/components/ui/button';
 import { useRouter } from 'next/navigation';
+import { ResponseRecommendFood } from '@/app/main/api/queries/useRecommendFood';
 
 const FoodComponent = () => {
   const router = useRouter();
@@ -15,15 +16,14 @@ const FoodComponent = () => {
     router.push('/food-entry');
   };
 
-  const [foodlist, setFoodList] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [foodlist, setFoodList] = useState<any>([]);
+  const [loading, setLoading] = useState<any>(true);
+  const [error, setError] = useState<any>(null);
 
   useEffect(() => {
     const fetchFoodList = async () => {
       try {
-        const response = await fetcher.get('api/v1/food/recommend/ai', {});
-        const { data } = response;
+        const { data } = await fetcher.get<ResponseRecommendFood>('api/v1/food/recommend/ai', {});
         if (data && data.foodlist) {
           setFoodList(data.foodlist);
         } else {
@@ -31,31 +31,31 @@ const FoodComponent = () => {
         }
         setLoading(false);
       } catch (error) {
-        setError(error.message);
+        setError(error);
         setLoading(false);
       }
     };
 
-   
     fetchFoodList();
   }, []);
 
   if (loading) return <p>Loading...</p>;
   if (error) {
-  return (
-    <div>
-      <div className='w-full text-center font-bold my-[50px]'>오늘 먹은 음식이 없어요! 입력해주세요 😊</div>
-      <Button className="w-full bg-[#FF9385] rounded-[10px] py-6" onClick={goToTodayFood}>
-        오늘 먹은 음식 입력하러 가기
-      </Button>
-    </div>
-  );
+    return (
+      <div>
+        <div className="w-full text-center font-bold my-[50px]">
+          오늘 먹은 음식이 없어요! 입력해주세요 😊
+        </div>
+        <Button className="w-full bg-[#FF9385] rounded-[10px] py-6" onClick={goToTodayFood}>
+          오늘 먹은 음식 입력하러 가기
+        </Button>
+      </div>
+    );
   }
-  
 
   return (
     <div>
-      {foodlist.map((food, index) => (
+      {foodlist.map((food: any, index: any) => (
         <div key={index} className="flex items-center bg-gray-100 mx-10 my-3 p-5 rounded-lg">
           <div className="flex flex-col p-1">
             <p className="text-md text-[#6CB663] font-semibold">{food.kcal}kcal</p>

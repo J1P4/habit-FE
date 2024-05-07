@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import axios from 'axios';
+import React, { useState, useMemo } from 'react';
 import MapComponent from './MapComponent';
 import RestaurantLinkIcon from '..//restaurant-link-icon';
 import Link from 'next/link';
@@ -7,7 +6,6 @@ import useCurrentPosition from '@/app/main/api/queries/useCurrentPosition';
 import useGoogleApiInfo from '@/app/main/api/queries/useGoogleApiInfo';
 import extractSearchKeyword from '@/app/main/uitls/extractSearchKeyword';
 import useSearchRestaurant from '@/app/main/api/queries/useSearchRestaurant';
-import proj4 from 'proj4';
 interface Ilocal {
   title: string;
   link: string;
@@ -22,16 +20,15 @@ interface IGetlocalListResult {
 
 interface RestaurantComponentProps {
   food: string;
-  category: string;
 }
 
-const RestaurantComponent: React.FC<RestaurantComponentProps> = ({ food, category }) => {
+const RestaurantComponent: React.FC<RestaurantComponentProps> = ({ food }) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [showPopup, setShowPopup] = useState<boolean>(false); // 모달 표시 여부를 관리하는 상태
   const { data: currentPosition, isLoading: isCurrentPositionLoading } = useCurrentPosition();
-  const latitude = currentPosition?.coords?.latitude as string;
-  const longitude = currentPosition?.coords?.longitude as string;
+  const latitude = currentPosition?.coords?.latitude as number;
+  const longitude = currentPosition?.coords?.longitude as number;
 
   const { data: googleApiInfo, isLoading: isGoogleApiLoading } = useGoogleApiInfo(
     latitude,
@@ -48,18 +45,6 @@ const RestaurantComponent: React.FC<RestaurantComponentProps> = ({ food, categor
 
   const localList = useMemo(() => {
     return localResponse?.data.items.map((local) => {
-      // TM128 좌표계 정의
-      var tm128 =
-        '+proj=tmerc +lat_0=38 +lon_0=128 +ellps=bessel +x_0=400000 +y_0=600000 +k=0.9999 +towgs84=-146.43,507.89,681.46';
-
-      // WGS84 좌표계 정의 (proj4 기본 내장)
-      var wgs84 = proj4.WGS84;
-      // 변환할 좌표
-
-      // // 좌표 변환 실행
-      const [longitude, latitude] = proj4(tm128, wgs84, [+local?.mapx, +local?.mapy]);
-      console.log('local', local, longitude, latitude);
-
       return {
         title: local.title,
         lng: 127,

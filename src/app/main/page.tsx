@@ -21,8 +21,9 @@ export default function MainPage() {
   const router = useRouter();
 
   const { data: currentPosition, isLoading: isCurrentPositionLoading } = useCurrentPosition();
-  const latitude = currentPosition?.coords?.latitude as string;
-  const longitude = currentPosition?.coords?.longitude as string;
+
+  const latitude = currentPosition?.coords?.latitude ?? 0;
+  const longitude = currentPosition?.coords?.longitude ?? 0;
 
   const { data: googleApiInfo, isLoading: isGoogleApiLoading } = useGoogleApiInfo(
     latitude,

@@ -1,7 +1,7 @@
 import { fetcher } from '@/commons/apis/fetcher';
 import { useQuery } from '@tanstack/react-query';
 
-interface ResponseRecommendFood {
+export interface ResponseRecommendFood {
   success: boolean;
   data: {
     foodlist: {
