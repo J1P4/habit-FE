@@ -13,8 +13,8 @@ interface NutrientNameMapping {
   selenium: '셀레늄';
   sodium: '나트륨';
   vitaminA: '비타민 A';
-  vitaminB1: '비타민 B1(티아민)';
-  vitaminB2: '비타민 B2(리보플라빈)';
+  vitaminB1: '비타민 B1';
+  vitaminB2: '비타민 B2';
   vitaminC: '비타민 C';
   moisture: '수분';
 }
@@ -30,8 +30,8 @@ export const nutrientNameMapping: NutrientNameMapping = {
   selenium: '셀레늄',
   sodium: '나트륨',
   vitaminA: '비타민 A',
-  vitaminB1: '비타민 B1(티아민)',
-  vitaminB2: '비타민 B2(리보플라빈)',
+  vitaminB1: '비타민 B1',
+  vitaminB2: '비타민 B2',
   vitaminC: '비타민 C',
   moisture: '수분',
 };
