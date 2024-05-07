@@ -54,13 +54,13 @@ const FoodComponent = () => {
   }
 
   return (
-    <div>
+    <div className='w-[500px] rounded-lg border border-gray-300'>
       {foodlist.map((food: any, index: any) => (
-        <div key={index} className="flex items-center bg-gray-100 mx-10 my-3 p-5 rounded-lg">
+        <div key={index} className="flex items-center bg-gray-100 mx-5 my-4 p-5 rounded-lg">
           <div className="flex flex-col p-1">
             <p className="text-md text-[#6CB663] font-semibold">{food.kcal}kcal</p>
             <h4 className="text-lg font-semibold py-1">{food.name}</h4>
-            <div className="flex">
+            <div className="flex w-[300px]">
               <p className="text-sm mr-2 text-[#767676]">탄수 {food.carbohydrate}g &nbsp; | </p>
               <p className="text-sm mr-2 text-[#767676]">단백질 {food.protein}g &nbsp; | </p>
               <p className="text-sm mr-2 text-[#767676]">지방 {food.fat}g &nbsp;</p>
