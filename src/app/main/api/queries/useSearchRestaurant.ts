@@ -26,36 +26,6 @@ const getSearchRestaurant = async (searchKeyword: string, food: any) =>
     },
   });
 
-// const updatedlocalList = await Promise.all(
-//     localResponse.data.items.map(async (item) => {
-//       try {
-//         const response = await axios.get(
-//             `https://maps.googleapis.com/maps/api/geocode/json`,
-//             {
-//               params: {
-//                 address: item.roadAddress,
-//                 key: 'AIzaSyCwrWwOutdytyZU67z3z5a9KmrewnqoCcc',
-//               },
-//             },
-//         );
-//         const location = response.data.results[0].geometry.location;
-//         function removeHTMLTags(string) {
-//           return string.replace(/<[^>]*>/g, '');
-//         }
-//         const cleanedTitle = removeHTMLTags(item.title);
-//         return {
-//           ...item,
-//           latitude: location.lat,
-//           longitude: location.lng,
-//           title: cleanedTitle,
-//         };
-//       } catch (error) {
-//         console.error('Error converting address to coordinates:', error);
-//         return item;
-//       }
-//     }),
-// );
-
 const useSearchRestaurant = (searchKeyword: string, food: string) => {
   return useQuery({
     queryKey: ['searchRestaurant', searchKeyword, food],
