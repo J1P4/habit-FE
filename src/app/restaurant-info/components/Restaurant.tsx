@@ -1,10 +1,11 @@
-//Restaurant.tsx
-
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useMemo } from 'react';
 import MapComponent from './MapComponent';
 import RestaurantLinkIcon from '..//restaurant-link-icon';
-
+import Link from 'next/link';
+import useCurrentPosition from '@/app/main/api/queries/useCurrentPosition';
+import useGoogleApiInfo from '@/app/main/api/queries/useGoogleApiInfo';
+import extractSearchKeyword from '@/app/main/uitls/extractSearchKeyword';
+import useSearchRestaurant from '@/app/main/api/queries/useSearchRestaurant';
 interface Ilocal {
   title: string;
   link: string;
@@ -22,100 +23,43 @@ interface RestaurantComponentProps {
 }
 
 const RestaurantComponent: React.FC<RestaurantComponentProps> = ({ food }) => {
-  const [selectedMarkerIndex, setSelectedMarkerIndex] = useState<number | null>(null);
-  const [localList, setlocalList] = useState<Ilocal[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const BASE_PATH = '/v1/search/local.json?';
+  const [showPopup, setShowPopup] = useState<boolean>(false); // 모달 표시 여부를 관리하는 상태
+  const { data: currentPosition, isLoading: isCurrentPositionLoading } = useCurrentPosition();
+  const latitude = currentPosition?.coords?.latitude as number;
+  const longitude = currentPosition?.coords?.longitude as number;
 
-  useEffect(() => {
-    const fetchlocalList = async () => {
-      try {
-        navigator.geolocation.getCurrentPosition(
-          async (position) => {
-            const { latitude, longitude } = position.coords;
-            const response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json`, {
-              params: {
-                latlng: `${latitude},${longitude}`,
-                key: 'AIzaSyCwrWwOutdytyZU67z3z5a9KmrewnqoCcc',
-              },
-            });
-            const address = response.data.results[0].formatted_address;
-            function extractSearchKeyword(address: string): string {
-              const addressParts = address.split(' ');
-              const keyword = addressParts.find(
-                (part) => part.includes('로') || part.includes('구'),
-              );
-              return keyword ? keyword : '';
-            }
-            const searchKeyword = extractSearchKeyword(address);
-            const localResponse = await axios.get<IGetlocalListResult>(BASE_PATH, {
-              params: {
-                query: `${searchKeyword} ${food}맛집 안심식당`,
-                display: 10,
-              },
-              headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'X-Naver-Client-Id': 'DS9Rk5eeFu3hi4cYgc6G',
-                'X-Naver-Client-Secret': '0VNIsyrJNt',
-              },
-            });
-            const updatedlocalList = await Promise.all(
-              localResponse.data.items.map(async (item) => {
-                try {
-                  const response = await axios.get(
-                    `https://maps.googleapis.com/maps/api/geocode/json`,
-                    {
-                      params: {
-                        address: item.roadAddress,
-                        key: 'AIzaSyCwrWwOutdytyZU67z3z5a9KmrewnqoCcc',
-                      },
-                    },
-                  );
-                  const location = response.data.results[0].geometry.location;
-                  function removeHTMLTags(string: string) {
-                    return string.replace(/<[^>]*>/g, '');
-                  }
-                  const cleanedTitle = removeHTMLTags(item.title);
-                  return {
-                    ...item,
-                    latitude: location.lat,
-                    longitude: location.lng,
-                    title: cleanedTitle,
-                  };
-                } catch (error) {
-                  console.error('Error converting address to coordinates:', error);
-                  return item;
-                }
-              }),
-            );
-            setlocalList(updatedlocalList);
-            setLoading(false);
-          },
-          (error) => {
-            console.error('Error getting current position:', error);
-            setLoading(false);
-            setError('Failed to get current position');
-          },
-        );
-      } catch (error) {
-        console.error('Error fetching local:', error);
-        setError('Failed to fetch local');
-        setLoading(false);
-      }
-    };
-    fetchlocalList();
-  }, [food]);
+  const { data: googleApiInfo, isLoading: isGoogleApiLoading } = useGoogleApiInfo(
+    latitude,
+    longitude,
+  );
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
+  const address = googleApiInfo?.data.results[0].formatted_address;
+
+  const searchKeyword = extractSearchKeyword(address);
+  const { data: localResponse, isLoading: isSearchRestaurantLoading } = useSearchRestaurant(
+    searchKeyword,
+    food,
+  );
+
+  const localList = useMemo(() => {
+    return localResponse?.data.items.map((local) => {
+      return {
+        title: local.title,
+        lng: 127,
+        lat: 375,
+      };
+    });
+  }, [localResponse]);
+  console.log('localResponse', localResponse);
 
   return (
-    <div className="mx-10 h-screen">
-      <MapComponent localList={localList} />
-      <div className="bg-gray-100 rounded-lg m-4 overflow-y-scroll" style={{ maxHeight: '400px' }}>
+    <div className="mx-10">
+      {localList && <MapComponent localList={localList} />}
+      <div className="rounded-lg m-4 ">
         <ul className="py-1">
-          {localList.map((local, index) => (
+          {localResponse?.data.items.map((local, index) => (
             <li key={index} className="pl-4 p-3 m-3 bg-white rounded-lg flex items-center">
               {local.total && <div>{local.total}</div>}
               <div className="flex-1">
@@ -138,6 +82,25 @@ const RestaurantComponent: React.FC<RestaurantComponentProps> = ({ food }) => {
           ))}
         </ul>
       </div>
+      {showPopup && (
+        <div className="fixed inset-0 flex items-center justify-center">
+          <div className="bg-white p-8 rounded-lg shadow-md relative flex flex-col items-center">
+            {' '}
+            {/* flex-col 클래스 추가 */}
+            <p className="text-lg font-semibold mb-4">{food} 관련 주변 식당이 없습니다 😭</p>{' '}
+            {/* mb-4 클래스 추가 */}
+            <div className="mt-4">
+              {' '}
+              {/* mt-4 클래스 추가 */}
+              <Link href="/recommend-food-info">
+                <div className="w-20 text-center bg-[#FF9385] hover:bg-gray-400 text-white font-semibold py-1.5 px-3 rounded">
+                  닫기
+                </div>
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

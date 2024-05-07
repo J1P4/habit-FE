@@ -9,12 +9,14 @@ import {
 } from '@/app/detail-nutri-info/api/queries/useGetUserNutriDetailHistory';
 import useDetailNutriList from '@/app/detail-nutri-info/hooks/useDetailNutriList';
 import { nutrientNameMapping } from '@/app/detail-nutri-info/constants/nutrientNameMapping';
+import { Button } from '@/commons/components/ui/button';
+import { useRouter } from 'next/navigation';
 
 const DetailNutriInfoPage = () => {
   const [dateFilter, setDateFilter] = useState<DateRangeType>('DAY');
 
   const { data, isGetUserNutriDetailHistoryLoading } = useDetailNutriList(dateFilter);
-
+  const { push } = useRouter();
   const carbohydrateRatio = Math.min(
     (data?.totalData?.carbohydrate / (data?.essentialNutrition.carbohydrate ?? 1)) * 100,
     100,
@@ -29,6 +31,9 @@ const DetailNutriInfoPage = () => {
     (data?.totalData?.fat / (data?.essentialNutrition.fat ?? 1)) * 100,
     100,
   );
+  const goToModiNurti = () => {
+    push('/modi-nurti');
+  };
 
   // TODO Loading 상태일 때 로딩 컴포넌트 추가하기
   if (isGetUserNutriDetailHistoryLoading) return <div>로딩중</div>;
@@ -64,6 +69,10 @@ const DetailNutriInfoPage = () => {
               proteinRatio={proteinRatio}
               fatRatio={fatRatio}
             />
+            <div className="mb-2" />
+            <Button onClick={goToModiNurti} className="bg-[#FF9385]">
+              오늘의 영양분 분석 수정하러 가기
+            </Button>
             <div className="mb-2" />
             <div className="flex justify-around w-full">
               <div className="flex flex-col items-center max-w-[60px] w-full">

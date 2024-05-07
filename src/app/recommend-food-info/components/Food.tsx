@@ -5,65 +5,82 @@ import axios from 'axios';
 import Link from 'next/link';
 import { fetcher } from '@/commons/apis/fetcher';
 import RestaurantIcon from './restaurant-icon';
+import { Button } from '@/commons/components/ui/button';
+import { useRouter } from 'next/navigation';
+import { ResponseRecommendFood } from '@/app/main/api/queries/useRecommendFood';
 
 const FoodComponent = () => {
-  const [foodlist, setFoodList] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const router = useRouter();
+
+  const goToTodayFood = () => {
+    router.push('/food-entry');
+  };
+
+  const [foodlist, setFoodList] = useState<any>([]);
+  const [loading, setLoading] = useState<any>(true);
+  const [error, setError] = useState<any>(null);
 
   useEffect(() => {
     const fetchFoodList = async () => {
       try {
-        const response = await fetcher.get('api/v1/food/recommend/ai', {});
-        const { data } = response;
+        const { data } = await fetcher.get<ResponseRecommendFood>('api/v1/food/recommend/ai', {});
         if (data && data.foodlist) {
           setFoodList(data.foodlist);
         } else {
-          setError('No food data available');
+          setError('오늘 먹은 음식을 입력해주세요!');
         }
         setLoading(false);
       } catch (error) {
-        setError(error.message);
+        setError(error);
         setLoading(false);
       }
     };
-  
+
     fetchFoodList();
   }, []);
 
-  
   if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
+  if (error) {
+    return (
+      <div>
+        <div className="w-full text-center font-bold my-[50px]">
+          오늘 먹은 음식이 없어요! 입력해주세요 😊
+        </div>
+        <Button className="w-full bg-[#FF9385] rounded-[10px] py-6" onClick={goToTodayFood}>
+          오늘 먹은 음식 입력하러 가기
+        </Button>
+      </div>
+    );
+  }
 
   return (
     <div>
-      {foodlist.map((food, index) => (
+      {foodlist.map((food: any, index: any) => (
         <div key={index} className="flex items-center bg-gray-100 mx-10 my-3 p-5 rounded-lg">
-          <div className="flex-shrink-0 mr-4">
-            {/* 이미지를 표시할 부분 */}
-          </div>
-          <div className="flex flex-col ">
-            <p className="text-sm text-[#6CB663]">{food.energy}kcal</p>
-            <h4 className="text-lg font-semibold">{food.name}</h4>
-            <div className='flex'>
-                <p className="text-sm mr-2 text-[#767676]">탄 {food.moisture}g | </p> 
-                <p className="text-sm mr-2 text-[#767676]">단 {food.protein}g | </p>
-                <p className="text-sm mr-2 text-[#767676]">지 {food.fat}g</p>
+          <div className="flex flex-col p-1">
+            <p className="text-md text-[#6CB663] font-semibold">{food.kcal}kcal</p>
+            <h4 className="text-lg font-semibold py-1">{food.name}</h4>
+            <div className="flex">
+              <p className="text-sm mr-2 text-[#767676]">탄수 {food.carbohydrate}g &nbsp; | </p>
+              <p className="text-sm mr-2 text-[#767676]">단백질 {food.protein}g &nbsp; | </p>
+              <p className="text-sm mr-2 text-[#767676]">지방 {food.fat}g &nbsp;</p>
             </div>
-            
           </div>
 
           <div className="ml-auto text-center bg-gray-100 rounded-lg p-3">
-          <div className="flex flex-col">
-          
+            <div className="flex flex-col"></div>
           </div>
-        </div>
 
           {/* 추천 식당 보기 버튼을 오른쪽으로 이동 */}
           <div className="ml-auto">
-          <Link href={{ pathname: '/restaurant-info', query: { food: food.name } }}>
-            <RestaurantIcon></RestaurantIcon>
-          </Link>
+            <Link
+              href={{
+                pathname: '/restaurant-info',
+                query: { food: food.name, category: food.category },
+              }}
+            >
+              <RestaurantIcon></RestaurantIcon>
+            </Link>
           </div>
         </div>
       ))}
