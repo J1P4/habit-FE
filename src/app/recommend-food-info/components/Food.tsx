@@ -44,7 +44,7 @@ const FoodComponent = () => {
     return (
       <div>
         <div className="w-full text-center font-bold my-[50px]">
-          오늘 먹은 음식이 없어요! 입력해주세요 😊
+          음식 추천을 위한 섭취 음식 정보가 부족해요! <br/><br/> 먹은 음식을 입력해주세요 😊
         </div>
         <Button className="w-full bg-[#FF9385] rounded-[10px] py-6" onClick={goToTodayFood}>
           오늘 먹은 음식 입력하러 가기
