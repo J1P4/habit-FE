@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 interface ResponseRecommendFood {
   success: boolean;
   data: {
-    foodList: {
+    foodlist: {
       categoryCode: number;
       name: string;
       category: string;
@@ -24,6 +24,7 @@ const useRecommendFood = () => {
   return useQuery({
     queryKey: ['recommendFood'],
     queryFn: recommendFood,
+    select: (data) => data.data.foodlist,
   });
 };
 export default useRecommendFood;

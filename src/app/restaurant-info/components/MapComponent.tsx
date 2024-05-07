@@ -12,14 +12,12 @@ interface MapComponentProps {
 }
 
 const MapComponent: React.FC<MapComponentProps> = ({ localList }) => {
-  console.log('localList', localList);
   const [selectedMarkerIndex, setSelectedMarkerIndex] = useState<number | null>(null);
   const [currentPosition, setCurrentPosition] = useState<GeolocationPosition | null>(null);
   const DEFAULT_LATITUDE = 37.5665;
   const DEFAULT_LONGITUDE = 126.978;
   const DEFAULT_ZOOM = 13;
 
-  console.log('localList', localList);
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
       (position) => {

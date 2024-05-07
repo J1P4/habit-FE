@@ -10,22 +10,17 @@ import useSearchRestaurant from '@/app/main/api/queries/useSearchRestaurant';
 
 interface RestaurantComponentProps {
   food: string;
+  searchKeyword: string;
+  isLoading: boolean;
 }
 
-const RestaurantComponent: React.FC<RestaurantComponentProps> = ({ food }) => {
+const RestaurantComponent: React.FC<RestaurantComponentProps> = ({
+  food,
+  searchKeyword,
+  isLoading,
+}) => {
   const plugin = useRef(Autoplay({ delay: 2000, stopOnInteraction: true }));
-  const { data: currentPosition, isLoading: isCurrentPositionLoading } = useCurrentPosition();
-  const latitude = currentPosition?.coords?.latitude as string;
-  const longitude = currentPosition?.coords?.longitude as string;
 
-  const { data: googleApiInfo, isLoading: isGoogleApiLoading } = useGoogleApiInfo(
-    latitude,
-    longitude,
-  );
-
-  const address = googleApiInfo?.data.results[0].formatted_address;
-
-  const searchKeyword = extractSearchKeyword(address);
   const { data: localResponse, isLoading: isSearchRestaurantLoading } = useSearchRestaurant(
     searchKeyword,
     food,
@@ -33,7 +28,7 @@ const RestaurantComponent: React.FC<RestaurantComponentProps> = ({ food }) => {
 
   console.log('localResponse', localResponse);
 
-  if (isGoogleApiLoading || isCurrentPositionLoading || isSearchRestaurantLoading)
+  if (isLoading || isSearchRestaurantLoading)
     return <p>위치를 기반하여 식당 정보를 가져오고 있습니다!</p>;
 
   return (
