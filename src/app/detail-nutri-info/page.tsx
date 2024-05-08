@@ -39,9 +39,7 @@ const DetailNutriInfoPage = () => {
   if (isGetUserNutriDetailHistoryLoading) return <div>로딩중</div>;
   return (
     <>
-    <div className="text-2xl font-bold mb-4 text-center ">상세 영양정보</div>
-      <div className="border border-[#D9D9D9] rounded-lg pt-2">
-      
+      <div className="rounded-lg pt-2">
         <div className="flex items-center p-5 px-4 gap-4 mb-2">
           <div
             className={`py-1 cursor-pointer flex justify-center items-center border-blue-400 border-[2px]  w-[160px] rounded-lg ${dateFilter === 'DAY' ? 'bg-blue-500 text-white border-none' : 'bg-transparent'}`}
@@ -93,25 +91,28 @@ const DetailNutriInfoPage = () => {
               </div>
             </div>
           </div>
-        <NutriList energy={data.totalData.energy}>
-          {Object.entries(data.totalData).map(([key, value]) => {
-            // 사용자가 섭취한 영양소의 양과 권장 영양소의 양을 가져옵니다.
-            const consumed = Math.round(value); // 사용자가 섭취한 양
-            const 권장영양소 = data.essentialNutrition;
-            const recommended = 권장영양소[key as keyof NutrientData]
-              ? Math.round(권장영양소[key as keyof NutrientData])
-              : '정보 없음'; // 권장량, 없다면 "정보 없음" 표시
-            return (
-              <NutriList.Item key={key}>
-                <div className=" w-[100px] text-center font-bold">{nutrientNameMapping[key] || key}</div>{' '}
-                {/* 영양소 이름 */}
-                <div className="w-[100px] text-center"> {consumed}</div>{' '}
-                {/* 사용자가 섭취한 영양소의 양 */}
-                <div className="w-[100px] text-center">{recommended}</div> {/* 권장 영양소의 양 */}
-              </NutriList.Item>
-            );
-          })}
-        </NutriList>
+          <NutriList energy={data.totalData.energy}>
+            {Object.entries(data.totalData).map(([key, value]) => {
+              // 사용자가 섭취한 영양소의 양과 권장 영양소의 양을 가져옵니다.
+              const consumed = Math.round(value); // 사용자가 섭취한 양
+              const 권장영양소 = data.essentialNutrition;
+              const recommended = 권장영양소[key as keyof NutrientData]
+                ? Math.round(권장영양소[key as keyof NutrientData])
+                : '정보 없음'; // 권장량, 없다면 "정보 없음" 표시
+              return (
+                <NutriList.Item key={key}>
+                  <div className=" w-[100px] text-center font-bold">
+                    {nutrientNameMapping[key] || key}
+                  </div>{' '}
+                  {/* 영양소 이름 */}
+                  <div className="w-[100px] text-center"> {consumed}</div>{' '}
+                  {/* 사용자가 섭취한 영양소의 양 */}
+                  <div className="w-[100px] text-center">{recommended}</div>{' '}
+                  {/* 권장 영양소의 양 */}
+                </NutriList.Item>
+              );
+            })}
+          </NutriList>
         </div>
       </div>
     </>
