@@ -45,7 +45,6 @@ export default function MainPage() {
 
   const { data: recommendNutri } = useRecommendNutrient();
 
-  console.log('a', recommendNutri?.foodList);
   const goToTodayFood = () => {
     push('/food-entry');
   };
