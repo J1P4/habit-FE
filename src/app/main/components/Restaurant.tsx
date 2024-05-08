@@ -3,9 +3,6 @@
 import React, { useState, useRef } from 'react';
 import Autoplay from 'embla-carousel-autoplay';
 import { Carousel, CarouselContent, CarouselItem } from '@/commons/components/ui/carousel';
-import useCurrentPosition from '@/app/main/api/queries/useCurrentPosition';
-import useGoogleApiInfo from '@/app/main/api/queries/useGoogleApiInfo';
-import extractSearchKeyword from '@/app/main/uitls/extractSearchKeyword';
 import useSearchRestaurant from '@/app/main/api/queries/useSearchRestaurant';
 
 interface RestaurantComponentProps {
@@ -25,8 +22,6 @@ const RestaurantComponent: React.FC<RestaurantComponentProps> = ({
     searchKeyword,
     food,
   );
-
-  console.log('localResponse', localResponse);
 
   if (isLoading || isSearchRestaurantLoading)
     return <p>위치를 기반하여 식당 정보를 가져오고 있습니다!</p>;
