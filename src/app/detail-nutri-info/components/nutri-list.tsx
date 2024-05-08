@@ -10,12 +10,12 @@ const NutriList = ({ children, energy = 0 }: { children: React.ReactNode; energy
         </div>
         <div className="bg-gray-100">
           <div className="flex justify-between px-10 py-4 text-lg">
-            <div className="font-bold ">영양소</div>
+            <div className="font-bold">영양소</div>
             <div className="font-bold">섭취량</div>
             <div className="font-bold">권장량</div>
           </div>
         </div>
-        <ul className="text-center w-[479px]">{children}</ul>
+        <ul className="text-center ">{children}</ul>
       </div>
     </div>
   );
@@ -23,7 +23,7 @@ const NutriList = ({ children, energy = 0 }: { children: React.ReactNode; energy
 
 const NutriListItem = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="bg-white w-full px-3 py-2 flex justify-between items-center">{children}</div>
+    <div className="bg-white text-center w-full py-2 flex justify-between items-center">{children}</div>
   );
 };
 

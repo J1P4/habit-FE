@@ -6,7 +6,7 @@ import useCurrentPosition from '@/app/main/api/queries/useCurrentPosition';
 import useGoogleApiInfo from '@/app/main/api/queries/useGoogleApiInfo';
 import extractSearchKeyword from '@/app/main/uitls/extractSearchKeyword';
 import useSearchRestaurant from '@/app/main/api/queries/useSearchRestaurant';
-import removeHtmlTags from '@/app/restaurant-info/utils/removeHtmlTags';
+
 interface Ilocal {
   title: string;
   link: string;
@@ -53,6 +53,14 @@ const RestaurantComponent: React.FC<RestaurantComponentProps> = ({ food }) => {
       };
     });
   }, [localResponse]);
+  console.log('localResponse', localResponse);
+
+  // items가 없을 때 팝업 창 띄우기
+  React.useEffect(() => {
+    if (localResponse?.data.items.length === 0) {
+      setShowPopup(true);
+    }
+  }, [localResponse]);
 
   return (
     <div className="mx-10">
@@ -64,7 +72,7 @@ const RestaurantComponent: React.FC<RestaurantComponentProps> = ({ food }) => {
               {local.total && <div>{local.total}</div>}
               <div className="flex-1">
                 <h3 className="leading-extra-loose text-base font-semibold">
-                  {removeHtmlTags(local.title)}
+                  {local.title.replace(/&amp;/g, '&')}
                 </h3>
                 <p className="leading-extra-loose text-xs font-semibold text-gray-600">
                   {local.roadAddress}

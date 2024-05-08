@@ -54,7 +54,7 @@ const FoodComponent = () => {
   }
 
   return (
-    <div className='w-full rounded-lg border border-gray-300'>
+    <div className='w-full min-w-[410px] rounded-lg border border-gray-300'>
       {foodlist.map((food: any, index: any) => (
         <div key={index} className="flex items-center bg-gray-100 mx-5 my-4 p-5 rounded-lg">
           <div className="flex flex-col p-1">
@@ -63,16 +63,11 @@ const FoodComponent = () => {
             <div className="flex w-[300px]">
               <p className="text-sm mr-2 text-[#767676]">탄수 {food.carbohydrate}g &nbsp; | </p>
               <p className="text-sm mr-2 text-[#767676]">단백질 {food.protein}g &nbsp; | </p>
-              <p className="text-sm mr-2 text-[#767676]">지방 {food.fat}g &nbsp;</p>
+              <p className="text-sm text-[#767676]">지방 {food.fat}g &nbsp;</p>
             </div>
           </div>
 
-          <div className="ml-auto text-center bg-gray-100 rounded-lg p-3">
-            <div className="flex flex-col"></div>
-          </div>
-
-          {/* 추천 식당 보기 버튼을 오른쪽으로 이동 */}
-          <div className="ml-auto">
+          <div className='pr-3'>
             <Link
               href={{
                 pathname: '/restaurant-info',

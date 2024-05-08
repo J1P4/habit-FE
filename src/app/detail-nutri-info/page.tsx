@@ -42,19 +42,19 @@ const DetailNutriInfoPage = () => {
       <div>
         <div className="flex items-center py-4 px-4 gap-4">
           <div
-            className={`cursor-pointer flex justify-center items-center border-blue-400 border-[1px]  w-[50px] rounded-lg ${dateFilter === 'DAY' ? 'bg-blue-500 text-white border-none' : 'bg-transparent'}`}
+            className={`cursor-pointer flex justify-center items-center border-blue-400 border-[2px] w-[150px] rounded-lg ${dateFilter === 'DAY' ? 'bg-blue-500 text-white border-none' : 'bg-transparent'}`}
             onClick={() => setDateFilter('DAY')}
           >
             일간
           </div>
           <div
-            className={`cursor-pointer flex justify-center items-center border-blue-400 border-[1px] rounded-lg w-[50px] ${dateFilter === 'WEEK' ? 'bg-blue-500 text-white border-none' : 'bg-transparent'}`}
+            className={`cursor-pointer flex justify-center items-center border-blue-400 border-[2px] rounded-lg w-[150px] ${dateFilter === 'WEEK' ? 'bg-blue-500 text-white border-none' : 'bg-transparent'}`}
             onClick={() => setDateFilter('WEEK')}
           >
             주간
           </div>
           <div
-            className={`cursor-pointer flex justify-center items-center border-blue-400 border-[1px]   rounded-lg w-[50px] ${dateFilter === 'MONTH' ? 'bg-blue-500 text-white border-none' : 'bg-transparent'}`}
+            className={`cursor-pointer flex justify-center items-center border-blue-400 border-[2px]   rounded-lg w-[150px] ${dateFilter === 'MONTH' ? 'bg-blue-500 text-white border-none' : 'bg-transparent'}`}
             onClick={() => setDateFilter('MONTH')}
           >
             월간
@@ -101,13 +101,24 @@ const DetailNutriInfoPage = () => {
               ? Math.round(권장영양소[key as keyof NutrientData])
               : '정보 없음'; // 권장량, 없다면 "정보 없음" 표시
             return (
-              <NutriList.Item key={key}>
-                <div className=" w-33% ">{nutrientNameMapping[key] || key}</div>{' '}
-                {/* 영양소 이름 */}
-                <div className="w-33% text-center"> {consumed}</div>{' '}
-                {/* 사용자가 섭취한 영양소의 양 */}
-                <div className="w-33% text-center">{recommended}</div> {/* 권장 영양소의 양 */}
-              </NutriList.Item>
+  
+                <NutriList.Item key={key}>
+                  <div className="flex flex-col items-center max-w-[60px] w-full">
+                    {nutrientNameMapping[key] || key}
+                  </div>
+                  {/* 영양소 이름 */}
+                  <div className="flex flex-col items-center max-w-[60px] w-full">
+                    {consumed}
+                  </div>
+                  {/* 사용자가 섭취한 영양소의 양 */}
+                  <div className="flex flex-col items-center max-w-[60px] w-full">
+                    {recommended}
+                  </div>
+                  {/* 권장 영양소의 양 */}
+                </NutriList.Item>
+      
+              
+
             );
           })}
         </NutriList>
