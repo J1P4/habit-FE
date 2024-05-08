@@ -4,6 +4,7 @@ import React, { useState, useRef } from 'react';
 import Autoplay from 'embla-carousel-autoplay';
 import { Carousel, CarouselContent, CarouselItem } from '@/commons/components/ui/carousel';
 import useSearchRestaurant from '@/app/main/api/queries/useSearchRestaurant';
+import removeHtmlTags from '@/app/restaurant-info/utils/removeHtmlTags';
 
 interface RestaurantComponentProps {
   food: string;
@@ -43,7 +44,7 @@ const RestaurantComponent: React.FC<RestaurantComponentProps> = ({
                 <div key={index} className="flex flex-col items-center">
                   {local.total && <div>{local.total}</div>}
                   <h3 className="leading-extra-loose text-base font-semibold">
-                    {local.title.replace(/&amp;/g, '&')}
+                    {removeHtmlTags(local.title)}
                   </h3>
                   <p className="leading-extra-loose text-xs font-semibold text-gray-600">
                     {local.roadAddress}
