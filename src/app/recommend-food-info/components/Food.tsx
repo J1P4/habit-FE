@@ -54,7 +54,7 @@ const FoodComponent = () => {
   }
 
   return (
-    <div className='w-[500px] rounded-lg border border-gray-300'>
+    <div className='w-full rounded-lg border border-gray-300'>
       {foodlist.map((food: any, index: any) => (
         <div key={index} className="flex items-center bg-gray-100 mx-5 my-4 p-5 rounded-lg">
           <div className="flex flex-col p-1">
