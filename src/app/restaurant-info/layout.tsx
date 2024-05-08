@@ -5,12 +5,11 @@ import { Suspense } from 'react';
 import { Header } from '@/commons/components/header/header';
 import { ArrowLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { PATHS } from '@/commons/constants/paths';
 
 export default function HomeLayout({ children }: { children: React.ReactNode }) {
-  const { push } = useRouter();
+  const { back } = useRouter();
   const onLeftClick = () => {
-    push(PATHS.메인);
+    back();
   };
   return (
     <Suspense fallback={<></>}>
