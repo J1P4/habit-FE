@@ -9,7 +9,7 @@ export default function HomePage() {
   };
   return (
     <div className="flex flex-col items-center justify-center h-dvh">
-      <Image src={HabitLogo} alt={'habit_logo.png'} className="mb-20" />
+      <Image src={HabitLogo} alt={'habit_logo.png'} className="mb-20 w-60" />
       <FixedBottomWrapper>
         <KakaoLoginButton onClick={onClickKakao} />
       </FixedBottomWrapper>

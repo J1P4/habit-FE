@@ -15,10 +15,13 @@ import useCurrentPosition from '@/app/main/api/queries/useCurrentPosition';
 import useGoogleApiInfo from '@/app/main/api/queries/useGoogleApiInfo';
 import extractSearchKeyword from '@/app/main/uitls/extractSearchKeyword';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
+import useRecommendNutrient from '@/app/main/api/queries/useRecommendNutrient';
+import RecommendFood from '@/app/main/components/recommend-food';
+import useUserName from '@/app/main/api/queries/useUserName';
 
 export default function MainPage() {
+  const { data: nickname, isLoading: isNickNameLoading } = useUserName();
   const { summary, isSummaryLoading } = useGetTodayUserNutritionAnalysiscardData();
-  const router = useRouter();
 
   const { data: currentPosition, isLoading: isCurrentPositionLoading } = useCurrentPosition();
 
@@ -40,19 +43,26 @@ export default function MainPage() {
 
   const { push } = useRouter();
 
-  console.log('address', address);
+  const { data: recommendNutri } = useRecommendNutrient();
+
   const goToTodayFood = () => {
     push('/food-entry');
   };
 
   const goToRecommendRestaurant = () => {
-    push(`/recommend-restaurant?dong=석촌동`);
+    push(`/recommend-restaurant?dong=${searchKeyword}`);
   };
 
   return (
     <div className="flex flex-col items-center w-full">
       <div>
-        <Headline title="오늘의 영양 분석 보고서 입니다" />
+        <Headline
+          title={
+            <>
+              <span>오늘의 {nickname}님</span> <br /> <span>영양 분석 보고서 입니다</span>
+            </>
+          }
+        />
         <TodayUserNutritionAnalysisCard summaryNutrients={summary} />
         <Ment region={searchKeyword}></Ment>
         <FoodComponent food={recommendFood}></FoodComponent>
@@ -70,6 +80,20 @@ export default function MainPage() {
         <div>우리동네 모범 식당 확인하러 가기</div>
         <ArrowRight />
       </div>
+      <div className="mb-4" />
+      <div className="flex flex-col w-full">
+        <div className="w-full flex flex-col pt-3 pl-4">
+          <h1 className="text-[18px] font-bold whitespace-pre-line mb-2">
+            {nickname}님의 영양 기반 추천 음식!
+          </h1>
+          <span className="text-[12px] text-gray-500 font-semibold whitespace-pre-line">
+            이런 음식은 어떠세요?
+          </span>
+        </div>
+        <div className="mb-4" />
+        <RecommendFood />
+      </div>
+      <div className="pb-[108px]" />
       <FixedBottomWrapper>
         <Button className="w-full bg-[#FF9385] rounded-[10px] py-6 " onClick={goToTodayFood}>
           오늘 먹은 음식 입력하러 가기

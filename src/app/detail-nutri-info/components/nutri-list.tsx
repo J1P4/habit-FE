@@ -2,29 +2,31 @@ import React from 'react';
 
 const NutriList = ({ children, energy = 0 }: { children: React.ReactNode; energy?: number }) => {
   return (
-    <div className="flex flex-col items-center py-6 px-4">
-      <div>영양정보</div>
-      <div className="flex flex-col items-center w-full">
-        <div className="flex w-full justify-between  border-b-[1px] py-4 items-center">
-          <div>총 열량</div>
-          <div className="text-xl">{Math.round(energy)} Kcal</div>
+    <div className="flex flex-col items-center w-full">
+      <div className="w-full border-t-[1px] overflow-hidden">
+        <div className="bg-[#FFF8EE] px-5 py-4 flex justify-between border-b">
+          <div className="font-bold text-xl">총 열량</div>
+          <div className="font-bold text-xl">{Math.round(energy)} Kcal</div>
         </div>
-        <div className="flex w-full justify-between  py-5 items-center border-b-[1px] ">
-          <div className="w-[100px] text-center text-lg">영양소</div>
-          <div className="w-[100px] text-center text-lg">섭취량</div>
-          <div className="w-[100px] text-center text-lg">권장량</div>
+        <div className="bg-gray-100">
+          <div className="flex justify-between px-10 py-4 text-lg">
+            <div className="font-bold ">영양소</div>
+            <div className="font-bold">섭취량</div>
+            <div className="font-bold">권장량</div>
+          </div>
         </div>
-        <ul className="w-full">{children}</ul>
+        <ul className="text-center w-[479px]">{children}</ul>
       </div>
     </div>
   );
 };
 
 const NutriListItem = ({ children }: { children: React.ReactNode }) => {
-  return <div className="flex w-full justify-between  py-4 items-center">{children}</div>;
+  return (
+    <div className="bg-white w-full px-3 py-2 flex justify-between items-center">{children}</div>
+  );
 };
 
-// Compound component pattern을 사용하여 NutriList에 NutriListItem을 추가
 NutriList.Item = NutriListItem;
 
 export default NutriList;

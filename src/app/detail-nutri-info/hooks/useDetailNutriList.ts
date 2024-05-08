@@ -4,7 +4,7 @@ import useGetUserNutriDetailHistory, {
 
 const useDetailNutriList = (dataRange: DateRangeType) => {
   const { data, isLoading } = useGetUserNutriDetailHistory(dataRange);
-  const { time, foodName, ...rest } = data?.data?.allTotal ?? {};
+  const { time, foodName, historyId, ...rest } = data?.data?.allTotal ?? {};
 
   const defaultNutrition = {
     calcium: 0,
