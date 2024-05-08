@@ -40,13 +40,13 @@ export default function MainPage() {
 
   const { push } = useRouter();
 
-  console.log('address', address);
+  console.log('address', searchKeyword);
   const goToTodayFood = () => {
     push('/food-entry');
   };
 
   const goToRecommendRestaurant = () => {
-    push(`/recommend-restaurant?dong=석촌동`);
+    push(`/recommend-restaurant?dong=${searchKeyword}`);
   };
 
   return (
