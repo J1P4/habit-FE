@@ -6,6 +6,7 @@ import useCurrentPosition from '@/app/main/api/queries/useCurrentPosition';
 import useGoogleApiInfo from '@/app/main/api/queries/useGoogleApiInfo';
 import extractSearchKeyword from '@/app/main/uitls/extractSearchKeyword';
 import useSearchRestaurant from '@/app/main/api/queries/useSearchRestaurant';
+import removeHtmlTags from '@/app/restaurant-info/utils/removeHtmlTags';
 interface Ilocal {
   title: string;
   link: string;
@@ -52,7 +53,6 @@ const RestaurantComponent: React.FC<RestaurantComponentProps> = ({ food }) => {
       };
     });
   }, [localResponse]);
-  console.log('localResponse', localResponse);
 
   return (
     <div className="mx-10">
@@ -64,7 +64,7 @@ const RestaurantComponent: React.FC<RestaurantComponentProps> = ({ food }) => {
               {local.total && <div>{local.total}</div>}
               <div className="flex-1">
                 <h3 className="leading-extra-loose text-base font-semibold">
-                  {local.title.replace(/&amp;/g, '&')}
+                  {removeHtmlTags(local.title)}
                 </h3>
                 <p className="leading-extra-loose text-xs font-semibold text-gray-600">
                   {local.roadAddress}
