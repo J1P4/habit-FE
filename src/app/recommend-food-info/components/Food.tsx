@@ -42,9 +42,10 @@ const FoodComponent = () => {
   if (loading) return <p>Loading...</p>;
   if (error) {
     return (
-      <div>
+      <div className="flex flex-col h-screen mt-20 px-4">
         <div className="w-full text-center font-bold my-[50px]">
-          음식 추천을 위한 섭취 음식 정보가 부족해요! <br/><br/> 먹은 음식을 입력해주세요 😊
+          음식 추천을 위한 섭취 음식 정보가 부족해요! <br />
+          <br /> 먹은 음식을 입력해주세요 😊
         </div>
         <Button className="w-full bg-[#FF9385] rounded-[10px] py-6" onClick={goToTodayFood}>
           오늘 먹은 음식 입력하러 가기
@@ -54,7 +55,7 @@ const FoodComponent = () => {
   }
 
   return (
-    <div className='w-full min-w-[410px] rounded-lg border border-gray-300'>
+    <div className="w-full min-w-[410px] rounded-lg border border-gray-300">
       {foodlist.map((food: any, index: any) => (
         <div key={index} className="flex items-center bg-gray-100 mx-5 my-4 p-5 rounded-lg">
           <div className="flex flex-col p-1">
@@ -67,7 +68,7 @@ const FoodComponent = () => {
             </div>
           </div>
 
-          <div className='pr-3'>
+          <div className="pr-3">
             <Link
               href={{
                 pathname: '/restaurant-info',
