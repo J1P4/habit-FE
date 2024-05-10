@@ -14,10 +14,10 @@ export default function FoodEntryPage() {
   const keyword = getValue().keyword;
 
   return (
-    <>
+    <div className="flex flex-col">
       <Input
         endIcon={SearchIcon}
-        className="rounded-2xl py-6"
+        className="rounded-2xl py-6 text-[16px]"
         placeholder="오늘 먹은 음식을 입력해주세요!"
         value={keyword}
         onChange={(e) => setValue(e.target.value)}
@@ -25,6 +25,6 @@ export default function FoodEntryPage() {
       <div className="mb-4" />
       <FoodList />
       <FoodDrawer />
-    </>
+    </div>
   );
 }

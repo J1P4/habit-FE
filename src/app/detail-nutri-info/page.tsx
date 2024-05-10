@@ -70,9 +70,11 @@ const DetailNutriInfoPage = () => {
               fatRatio={fatRatio}
             />
             <div className="mb-2" />
-            <Button onClick={goToModiNurti} className="bg-[#FF9385]">
-              오늘의 영양분 분석 수정하러 가기
-            </Button>
+            {fatRatio + proteinRatio + carbohydrateRatio > 0 && (
+              <Button onClick={goToModiNurti} className="bg-[#FF9385]">
+                오늘의 영양분 분석 수정하러 가기
+              </Button>
+            )}
             <div className="mb-2" />
             <div className="flex justify-around w-full">
               <div className="flex flex-col items-center max-w-[60px] w-full">
@@ -101,24 +103,16 @@ const DetailNutriInfoPage = () => {
               ? Math.round(권장영양소[key as keyof NutrientData])
               : '정보 없음'; // 권장량, 없다면 "정보 없음" 표시
             return (
-  
-                <NutriList.Item key={key}>
-                  <div className="flex flex-col items-center max-w-[60px] w-full">
-                    {nutrientNameMapping[key] || key}
-                  </div>
-                  {/* 영양소 이름 */}
-                  <div className="flex flex-col items-center max-w-[60px] w-full">
-                    {consumed}
-                  </div>
-                  {/* 사용자가 섭취한 영양소의 양 */}
-                  <div className="flex flex-col items-center max-w-[60px] w-full">
-                    {recommended}
-                  </div>
-                  {/* 권장 영양소의 양 */}
-                </NutriList.Item>
-      
-              
-
+              <NutriList.Item key={key}>
+                <div className="flex flex-col items-center max-w-[60px] w-full">
+                  {nutrientNameMapping[key] || key}
+                </div>
+                {/* 영양소 이름 */}
+                <div className="flex flex-col items-center max-w-[60px] w-full">{consumed}</div>
+                {/* 사용자가 섭취한 영양소의 양 */}
+                <div className="flex flex-col items-center max-w-[60px] w-full">{recommended}</div>
+                {/* 권장 영양소의 양 */}
+              </NutriList.Item>
             );
           })}
         </NutriList>
