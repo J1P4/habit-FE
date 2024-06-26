@@ -3,7 +3,6 @@
 import useUserFoodHistory from '@/app/modi-nurti/hooks/useUserFoodHistory';
 import ModiDrawer from '@/app/modi-nurti/components/modi-drawer';
 import { useCallback, useState } from 'react';
-import { useRouter } from 'next/navigation';
 
 const Time = {
   BREAKFAST: '아침',

@@ -14,6 +14,9 @@ import { Form, FormControl, FormField, FormItem, FormLabel } from '@/commons/com
 import { useEffect } from 'react';
 import useModiNurti, { ModiNurtiRequest } from '@/app/modi-nurti/api/mutations/use-modi-nurti';
 import { useToast } from '@/commons/components/ui/use-toast';
+import useDeleteNurti, {
+  DeleteNurtiRequest,
+} from '@/app/modi-nurti/api/mutations/use-delete-nurti';
 
 const ModiDrawer = ({
   isOpen,
@@ -47,13 +50,14 @@ const ModiDrawer = ({
     });
   }, [data, form]);
 
-  const { mutateAsync } = useModiNurti();
+  const { mutateAsync: modiMutateAsync } = useModiNurti();
+  const { mutateAsync: deleteMutateAsync } = useDeleteNurti();
   const onSubmit = async (values: ModiNurtiRequest) => {
     if (!data) return;
     const { foodName, ...rest } = data?.data;
     // TODO 로직 정리
     try {
-      const { data: res } = await mutateAsync({
+      const { data: res } = await modiMutateAsync({
         ...rest,
         ...values,
       });
@@ -74,13 +78,45 @@ const ModiDrawer = ({
     }
   };
 
+  const onDelete = async (value: DeleteNurtiRequest) => {
+    if (!data) return;
+    try {
+      const { data: res } = await deleteMutateAsync({
+        historyId: data?.data.historyId,
+      });
+      if (res) {
+        onOpenChange(false);
+        toast({
+          title: '삭제되었습니다.',
+        });
+      } else {
+        toast({
+          title: '삭제에 실패했습니다.',
+        });
+      }
+    } catch (e) {
+      toast({
+        title: '삭제에 실패했습니다.',
+      });
+    }
+  };
+
   if (isLoading) return <></>;
   return (
     <Drawer open={isOpen} onOpenChange={onOpenChange}>
       <DrawerContent className="h-4/5">
         <DrawerDescription className=" flex items-center justify-center flex-col">
-          <div className="px-4 text-lg pt-4">
-            <span className="font-bold text-violet-500">{data?.data.foodName}</span>
+          <div className="px-4 text-lg pt-4 flex items-center justify-between w-full">
+            <div className="flex-grow text-center">
+              <span className="font-bold text-violet-500">{data?.data.foodName}</span>
+            </div>
+            <Button
+              variant="destructive"
+              className="w-[45px]"
+              onClick={() => onDelete({ historyId: data?.data?.historyId as number })}
+            >
+              삭제
+            </Button>
           </div>
           <div className="mt-5" />
           <div className="w-full px-4 ">
