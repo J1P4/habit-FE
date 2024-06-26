@@ -53,8 +53,8 @@ const ModiDrawer = ({
   const { mutateAsync: modiMutateAsync } = useModiNurti();
   const { mutateAsync: deleteMutateAsync } = useDeleteNurti();
   const onSubmit = async (values: ModiNurtiRequest) => {
-    if (!data) return;
-    const { foodName, ...rest } = data?.data;
+    if (!data || !data.data) return;
+    const { foodName, ...rest } = data.data;
     // TODO 로직 정리
     try {
       const { data: res } = await modiMutateAsync({
@@ -79,7 +79,12 @@ const ModiDrawer = ({
   };
 
   const onDelete = async (value: DeleteNurtiRequest) => {
-    if (!data) return;
+    if (!data || !data.data) {
+      toast({
+        title: '데이터가 없습니다.',
+      });
+      return;
+    }
     try {
       const { data: res } = await deleteMutateAsync({
         historyId: data?.data.historyId,
