@@ -37,7 +37,7 @@ const MapComponent: React.FC<MapComponentProps> = ({ localList }) => {
       const response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json`, {
         params: {
           address: address,
-          key: 'AIzaSyCwrWwOutdytyZU67z3z5a9KmrewnqoCcc', // Replace with your Google Maps API key
+          key: process.env.NEXT_PUBLIC_GOOGLE_API_KEY,
         }
       });
       const location = response.data.results[0].geometry.location;
